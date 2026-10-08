@@ -51,12 +51,9 @@ Antes de começar, você precisará ter instalado em sua máquina:
 
 1. **Clone este repositório:**
    ```bash
-   git clone [https://github.com/Jhonatanrs10/JRSAPP.git](https://github.com/Jhonatanrs10/JRSAPP.git)
+   git clone https://github.com/Jhonatanrs10/berries.git
 
 ## 🚀 Futuras Atualizações (Roadmap)
 
-- [x] Ajustar onLongPress no import(market) para em vez de gerar o arquivo txt copiar para a área de transferência.
-- [x] Ajustar index(animes) por padrão abre mostrando os animes do dia.
-- [x] Melhorar Icone do App.
-- [] Melhorar os parametros de filtragem index(finance).
-- [] Melhorar UX input(market).
+- Melhorar os parametros de filtragem index(finance).
+- Melhorar UX input(market).
