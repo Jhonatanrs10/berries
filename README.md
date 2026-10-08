@@ -55,6 +55,8 @@ Antes de começar, você precisará ter instalado em sua máquina:
 
 ## 🚀 Futuras Atualizações (Roadmap)
 
-- [] onLongPress no import de (market) para em vez de gerar o arquivo txt copiar para a área de transferência.
-- [] (animes) index por padrão abre mostrando os animes do dia.
+- [] Ajustar onLongPress no import(market) para em vez de gerar o arquivo txt copiar para a área de transferência.
+- [] Ajustar index(animes) por padrão abre mostrando os animes do dia.
 - [] Melhorar Icone do App.
+- [] Melhorar os parametros de filtragem index(finance).
+- [] Melhorar UX input(market).
