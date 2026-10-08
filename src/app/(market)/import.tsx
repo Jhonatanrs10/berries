@@ -1,12 +1,13 @@
 import { useTranslation } from 'react-i18next';
 import React, { useState } from 'react';
 import { Pressable, StyleSheet, Alert, ScrollView } from 'react-native';
-import { Text, View } from '../../components/Themed'; // <- Certifique-se de importar daqui
+import { Text, View } from '../../components/Themed';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from 'expo-router';
 import * as FileSystem from 'expo-file-system/legacy';
 import * as Sharing from 'expo-sharing';
 import * as DocumentPicker from 'expo-document-picker';
+import * as Clipboard from 'expo-clipboard'; // <- Importe o expo-clipboard aqui
 import Colors from '../../constants/Colors';
 import { useColorScheme } from '../../components/useColorScheme';
 
@@ -101,7 +102,6 @@ export default function ProductsScreen() {
       const updated = [...new Set([...current, ...newItems])];
 
       await saveProducts(updated);
-      //Alert.alert(t('return.success'), t('return.import_completed'));
     } catch (error) {
       console.error('Erro ao importar:', error);
       Alert.alert(t('return.error'), t('return.error_import_format'));
@@ -126,28 +126,34 @@ export default function ProductsScreen() {
     );
   };
 
+  // Função auxiliar para gerar o texto formatado do histórico
+  const getFormattedHistoryContent = async (): Promise<string | null> => {
+    const stored = await AsyncStorage.getItem('history');
+    const history: HistoryItem[] = stored ? JSON.parse(stored) : [];
+
+    if (history.length === 0) {
+      Alert.alert(t('return.warning'), t('return.none'));
+      return null;
+    }
+
+    return history
+      .map((item) => {
+        const total = item.unitValue * item.quantity;
+        return `${item.product} ${item.quantity}x ${item.unitValue.toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        })} (${total.toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        })})`;
+      })
+      .join('\n');
+  };
+
   const exportMarketHistory = async () => {
     try {
-      const stored = await AsyncStorage.getItem('history');
-      const history: HistoryItem[] = stored ? JSON.parse(stored) : [];
-
-      if (history.length === 0) {
-        Alert.alert(t('return.warning'), t('return.none'));
-        return;
-      }
-
-      const content = history
-        .map((item) => {
-          const total = item.unitValue * item.quantity;
-          return `${item.product} ${item.quantity}x ${item.unitValue.toLocaleString('pt-BR', {
-            style: 'currency',
-            currency: 'BRL',
-          })} (${total.toLocaleString('pt-BR', {
-            style: 'currency',
-            currency: 'BRL',
-          })})`;
-        })
-        .join('\n');
+      const content = await getFormattedHistoryContent();
+      if (!content) return;
 
       const fileUri = FileSystem.documentDirectory + 'history.txt';
 
@@ -158,6 +164,19 @@ export default function ProductsScreen() {
       await Sharing.shareAsync(fileUri);
     } catch (error) {
       console.error('Erro ao exportar histórico:', error);
+    }
+  };
+
+  // Nova função para copiar o histórico para a área de transferência
+  const copyMarketHistoryToClipboard = async () => {
+    try {
+      const content = await getFormattedHistoryContent();
+      if (!content) return;
+
+      await Clipboard.setStringAsync(content);
+      Alert.alert(t('return.success'), t('return.clipboard'));
+    } catch (error) {
+      console.error('Erro ao copiar histórico:', error);
     }
   };
 
@@ -184,6 +203,7 @@ export default function ProductsScreen() {
         <View style={styles.rowButtons}>
           <Pressable
             onPress={exportMarketHistory}
+            onLongPress={copyMarketHistoryToClipboard} // <- Adicionado o evento de toque longo aqui
             style={[styles.button, styles.halfButton, { backgroundColor: colors.success }]}
           >
             <Text style={styles.buttonText}>{t('return.export_history')}</Text>

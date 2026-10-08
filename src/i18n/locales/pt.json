@@ -149,7 +149,8 @@
     "export_history": "Exportar Histórico",
     "clear_history": "Limpar Histórico",
     "clear_history_msg": "Deseja excluir todos os itens da lista?",
-    "warning_clean_database": "Deseja apagar os dados do banco de dados?"
+    "warning_clean_database": "Deseja apagar os dados do banco de dados?",
+    "clipboard": "Copiado para a área de transferência!"
   },
   "stats": {
     "total_animes": "Total de Animes",

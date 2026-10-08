@@ -69,12 +69,12 @@ const AnimeItem: React.FC<AnimeItemProps> = ({ anime, colors, abrirLink, editarA
           <Text style={[
             styles.animeStatus,
             {
-             color: anime.status === 'watching' ? colors.info : 
-           anime.status === 'completed' ? colors.success : 
-           colors.warning2, // Cor para plan_to_watch
-    backgroundColor: anime.status === 'watching' ? `${colors.info}20` : 
-                     anime.status === 'completed' ? `${colors.success}20` : 
-                     `${colors.warning2}20`,
+              color: anime.status === 'watching' ? colors.info :
+                anime.status === 'completed' ? colors.success :
+                  colors.warning2, // Cor para plan_to_watch
+              backgroundColor: anime.status === 'watching' ? `${colors.info}20` :
+                anime.status === 'completed' ? `${colors.success}20` :
+                  `${colors.warning2}20`,
               paddingHorizontal: 10,
               paddingVertical: 5,
               borderRadius: 8,
@@ -195,12 +195,29 @@ const dayOrder: { [key: string]: number } = {
   'saturday': 6,
 };
 
+// Mapeia o índice do JavaScript (0 = domingo, 1 = segunda, ...) para o seu tipo ReleaseDay
+const getTodayReleaseDay = (): ReleaseDay => {
+  const days: ReleaseDay[] = [
+    'sunday',
+    'monday',
+    'tuesday',
+    'wednesday',
+    'thursday',
+    'friday',
+    'saturday',
+  ];
+  const todayIndex = new Date().getDay(); // Retorna de 0 (Domingo) a 6 (Sábado)
+  return days[todayIndex];
+};
+
 export default function MeusAnimes() {
   const { t } = useTranslation();
 
   const [animes, setAnimes] = useState<Anime[]>([]);
   const [busca, setBusca] = useState('');
-  const [selectedDayFilter, setSelectedDayFilter] = useState<ReleaseDay | 'all' | 'plan_to_watch' | null>(null);
+
+  const [selectedDayFilter, setSelectedDayFilter] = useState<ReleaseDay | 'all' | 'plan_to_watch' | null>(getTodayReleaseDay());
+
   const colorScheme = useColorScheme() ?? 'light';
   const colors = Colors[colorScheme];
   const router = useRouter();
@@ -272,34 +289,34 @@ export default function MeusAnimes() {
     });
   }, [router]); // Adicionado useCallback para estabilizar a função
 
-const abrirLink = useCallback((url: string | null) => {
-  if (!url) {
-    Alert.alert(t('return.warning'), t('return.no_link'));
-    return;
-  }
+  const abrirLink = useCallback((url: string | null) => {
+    if (!url) {
+      Alert.alert(t('return.warning'), t('return.no_link'));
+      return;
+    }
 
-  // 1. Remove espaços em branco no início e no fim da string
-  const cleanInput = url.trim();
+    // 1. Remove espaços em branco no início e no fim da string
+    const cleanInput = url.trim();
 
-  if (!cleanInput) {
-    Alert.alert(t('return.warning'), t('return.no_link'));
-    return;
-  }
+    if (!cleanInput) {
+      Alert.alert(t('return.warning'), t('return.no_link'));
+      return;
+    }
 
-  // 2. Garante que a URL tenha o protocolo http ou https
-  let formattedUrl = cleanInput;
-  if (!/^https?:\/\//i.test(cleanInput)) {
-    formattedUrl = `https://${cleanInput}`;
-  }
+    // 2. Garante que a URL tenha o protocolo http ou https
+    let formattedUrl = cleanInput;
+    if (!/^https?:\/\//i.test(cleanInput)) {
+      formattedUrl = `https://${cleanInput}`;
+    }
 
-  // 3. Converte espaços e caracteres especiais em formato aceito por URLs (%20)
-  const finalUrl = encodeURI(formattedUrl);
+    // 3. Converte espaços e caracteres especiais em formato aceito por URLs (%20)
+    const finalUrl = encodeURI(formattedUrl);
 
-  // 4. Tenta abrir a URL formatada
-  Linking.openURL(finalUrl).catch((err) =>
-    Alert.alert(t('return.error'), `${t('return.error_open_link')}: ${err.message}`)
-  );
-}, [t]);
+    // 4. Tenta abrir a URL formatada
+    Linking.openURL(finalUrl).catch((err) =>
+      Alert.alert(t('return.error'), `${t('return.error_open_link')}: ${err.message}`)
+    );
+  }, [t]);
   const animesFiltrados = React.useMemo(() => {
     let lista = [...animes];
 

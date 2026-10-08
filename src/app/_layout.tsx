@@ -19,7 +19,7 @@ export const unstable_settings = {
   initialRouteName: 'index',
 };
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
+// Impede que a splash screen seja ocultada automaticamente
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -28,14 +28,18 @@ export default function RootLayout() {
     ...FontAwesome.font,
   });
 
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
     if (error) throw error;
   }, [error]);
 
   useEffect(() => {
     if (loaded) {
-      SplashScreen.hideAsync();
+      // Força a Splash Screen a ficar visível por 5 segundos para testes
+      const timer = setTimeout(() => {
+        SplashScreen.hideAsync();
+      }, 5000);
+
+      return () => clearTimeout(timer);
     }
   }, [loaded]);
 

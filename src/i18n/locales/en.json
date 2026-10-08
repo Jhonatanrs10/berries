@@ -149,7 +149,8 @@
     "export_history": "Export History",
     "clear_history": "Clear History",
     "clear_history_msg": "Do you want to delete all items from the list?",
-    "warning_clean_database": "Do you want to delete the data from the database?"
+    "warning_clean_database": "Do you want to delete the data from the database?",
+    "clipboard": "Copied to the clipboard!"
   },
   "stats": {
     "total_animes": "Total Animes",

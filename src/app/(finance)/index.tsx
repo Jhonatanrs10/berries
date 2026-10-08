@@ -1,14 +1,13 @@
 import { useTranslation } from 'react-i18next';
-import { useState, useEffect, useCallback } from 'react';
-import { Button, Alert, ScrollView, StyleSheet, TextInput, FlatList } from 'react-native'; // Importe FlatList
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import { Alert, StyleSheet, TextInput, FlatList } from 'react-native';
 import { Text, View } from '../../components/Themed';
 import { buscarTransacoes, deletarTransacao } from '../../database/db';
 import { formatarMoeda } from '../../utils/formatacao';
-import { useFocusEffect } from 'expo-router';
-import { useRouter } from 'expo-router';
+import { useFocusEffect, useRouter } from 'expo-router';
 import Colors from '../../constants/Colors';
 import { useColorScheme } from '../../components/useColorScheme';
-import ButtonTT from '../../components/Jhonatanrs/ButtonTT'; // Ajuste o caminho se necessário
+import ButtonTT from '../../components/Jhonatanrs/ButtonTT';
 
 type TipoTransacao = 'PIX' | 'Dinheiro' | 'Boleto' | 'Débito' | 'Crédito' | 'TED' | 'DOC' | 'Distinto';
 type Acao = 'entrada' | 'saida';
@@ -38,20 +37,16 @@ export default function Finance() {
       const resultado = await buscarTransacoes();
       let transacoesCarregadas = resultado as Transacao[];
 
-      // --- PONTO DE MUDANÇA: ORDENAR TRANSAÇÕES ---
+      // Ordenar transações (mais recente primeiro)
       transacoesCarregadas.sort((a, b) => {
-        // Converte a string 'DD/MM/AAAA' para 'AAAA-MM-DD' para comparação
         const dataA = a.data.split('/').reverse().join('-');
         const dataB = b.data.split('/').reverse().join('-');
 
-        // Compara as datas (mais recente primeiro)
-        if (dataA < dataB) return 1; // A é mais antiga que B, então B vem antes de A
-        if (dataA > dataB) return -1; // A é mais recente que B, então A vem antes de B
+        if (dataA < dataB) return 1;
+        if (dataA > dataB) return -1;
 
-        // Se as datas forem iguais, ordena por ID (opcional, mas bom para consistência)
-        return b.id - a.id; // ID maior (mais recente) primeiro
+        return b.id - a.id;
       });
-      // --- FIM DO PONTO DE MUDANÇA ---
 
       setTransacoes(transacoesCarregadas);
     } catch (error) {
@@ -78,7 +73,7 @@ export default function Finance() {
           onPress: async () => {
             try {
               await deletarTransacao(id);
-              await carregarTransacoes(); // Recarrega e reordena após exclusão
+              await carregarTransacoes();
             } catch (error) {
               console.error('Error deleting:', error);
               Alert.alert(t('return.error'), t('return.error_delete_transaction'));
@@ -106,11 +101,32 @@ export default function Finance() {
     });
   }
 
-  // --- RECOMENDADO: Mudar para FlatList para melhor performance ---
-  // Seus estilos de `transacaoContainer`, `transacaoHeader`, etc. seriam aplicados aqui.
-  const renderItem = ({ item: transacao }: { item: Transacao }) => (
+  // --- FILTRO OTIMIZADO COM useMemo ---
+  const transacoesFiltradas = useMemo(() => {
+    if (!busca.trim()) return transacoes;
+
+    const termoBusca = busca.toLowerCase().trim();
+
+    return transacoes.filter(transacao => {
+      // Busca em campos de texto simples
+      const emTexto =
+        transacao.descricao.toLowerCase().includes(termoBusca) ||
+        transacao.caixa.toLowerCase().includes(termoBusca) ||
+        transacao.categoria.toLowerCase().includes(termoBusca);
+
+      if (emTexto) return true;
+
+      // Busca numérica sem chamar formatarMoeda em tempo real
+      const valorTotal = (transacao.quantidade * transacao.valor).toString();
+      const valorUnitario = transacao.valor.toString();
+
+      return valorTotal.includes(termoBusca) || valorUnitario.includes(termoBusca);
+    });
+  }, [transacoes, busca]);
+
+  // --- RENDERIZADOR DE ITEM OTIMIZADO COM useCallback ---
+  const renderItem = useCallback(({ item: transacao }: { item: Transacao }) => (
     <View
-      key={transacao.id} // FlatList já gerencia chaves, mas é bom ter no item renderizado
       style={[
         styles.transacaoContainer,
         {
@@ -173,26 +189,16 @@ export default function Finance() {
         <ButtonTT
           title={t('button.edit')}
           onPress={() => editarTransacao(transacao)}
-          color="info" // Use colorName com o nome da cor do seu Colors.ts
+          color="info"
         />
         <ButtonTT
           title="X"
           onLongPress={() => confirmarExclusao(transacao.id)}
-          color="error" // Use colorName com o nome da cor do seu Colors.ts
+          color="error"
         />
       </View>
     </View>
-  );
-
-  const transacoesFiltradas = transacoes.filter(transacao => {
-    const termoBusca = busca.toLowerCase();
-    return (
-      transacao.descricao.toLowerCase().includes(termoBusca) ||
-      transacao.caixa.toLowerCase().includes(termoBusca) ||
-      transacao.categoria.toLowerCase().includes(termoBusca) ||
-      formatarMoeda(transacao.valor).includes(termoBusca)
-    );
-  });
+  ), [colors, t]);
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -217,10 +223,16 @@ export default function Finance() {
         data={transacoesFiltradas}
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
-        style={styles.flatList} // Estilo para a FlatList
-        contentContainerStyle={styles.flatListContent} // Estilo para o conteúdo dentro da FlatList
+        style={styles.flatList}
+        contentContainerStyle={styles.flatListContent}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
+
+        // Otimizações de renderização da FlatList
+        initialNumToRender={10}
+        maxToRenderPerBatch={10}
+        windowSize={5}
+        removeClippedSubviews={true}
       />
     </View>
   );
@@ -252,14 +264,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     fontSize: 16,
   },
-  // Novos estilos para FlatList
   flatList: {
     flex: 1,
-    paddingHorizontal: 20, // Padding horizontal como no seu ScrollView
+    paddingHorizontal: 20,
   },
   flatListContent: {
-    paddingTop: 15, // Padding superior como no seu ScrollView
-    paddingBottom: 20, // Adicione padding inferior para o último item não ficar colado
+    paddingTop: 15,
+    paddingBottom: 20,
   },
   transacaoContainer: {
     borderRadius: 12,
