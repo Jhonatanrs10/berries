@@ -181,13 +181,13 @@ const DynamicSeasonInput = forwardRef<DynamicSeasonInputRef, DynamicSeasonInputP
           {seasons.map((season, index) => (
             // A chave é o ID único da temporada, garantido pelo getNextId
             <View key={season.id}>
-              <Text style={[styles.label, labelStyle, { color: colors.text }]}>{labelPrefix} {index + 1}:</Text>
-              <View style={[styles.seasonGroup, seasonContainerStyle, { backgroundColor: colors.inputBackground }]}>
+              <Text style={[styles.label, labelStyle, { color: colors.text_primary }]}>{labelPrefix} {index + 1}:</Text>
+              <View style={[styles.seasonGroup, seasonContainerStyle, { backgroundColor: colors.background_secondary }]}>
 
                 <TouchableOpacity
                   onPressIn={() => handlePressIn(season.id, -1, -10)}
                   onPressOut={handlePressOut}
-                  style={[styles.valueButton, { backgroundColor: colors.primary }]}
+                  style={[styles.valueButton, { backgroundColor: colors.button_primary }]}
                 >
                   <Text style={styles.valueButtonText}>-</Text>
                 </TouchableOpacity>
@@ -196,9 +196,9 @@ const DynamicSeasonInput = forwardRef<DynamicSeasonInputRef, DynamicSeasonInputP
                   style={[
                     styles.valueDisplay,
                     {
-                      borderColor: colors.borderColor,
-                      color: colors.text,
-                      backgroundColor: colors.inputBackground,
+                      borderColor: colors.border,
+                      color: colors.text_primary,
+                      backgroundColor: colors.background_secondary,
                     },
                   ]}
                 >
@@ -208,7 +208,7 @@ const DynamicSeasonInput = forwardRef<DynamicSeasonInputRef, DynamicSeasonInputP
                 {seasons.length < 0 && (
                   <TouchableOpacity
                     onPress={() => removeSeasonInput(season.id)}
-                    style={[styles.removeButton, { backgroundColor: colors.error }]}
+                    style={[styles.removeButton, { backgroundColor: colors.danger }]}
                   >
                     <Text style={styles.removeButtonText}>X</Text>
                   </TouchableOpacity>
@@ -217,7 +217,7 @@ const DynamicSeasonInput = forwardRef<DynamicSeasonInputRef, DynamicSeasonInputP
                 <TouchableOpacity
                   onPressIn={() => handlePressIn(season.id, 1, 10)}
                   onPressOut={handlePressOut}
-                  style={[styles.valueButton, { backgroundColor: colors.primary }]}
+                  style={[styles.valueButton, { backgroundColor: colors.button_primary }]}
                 >
                   <Text style={styles.valueButtonText}>+</Text>
                 </TouchableOpacity>

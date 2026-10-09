@@ -26,8 +26,8 @@ export function ThemedToggle<T>({ options, selectedValue, onValueChange, style, 
 
   return (
     <View style={[styles.toggleContainer, style, { 
-        backgroundColor: colors.inputBackground, 
-        borderColor: colors.borderColor 
+        backgroundColor: colors.background_secondary, 
+        borderColor: colors.border 
     }]}>
       {effectiveOptions.map((option) => {
         const isSelected = selectedValue === option.value;
@@ -35,20 +35,20 @@ export function ThemedToggle<T>({ options, selectedValue, onValueChange, style, 
         // Estilo do botão: Fundo temático
         const buttonStyle = [
             styles.button,
-            { backgroundColor: colors.inputBackground }, // Fundo padrão
+            { backgroundColor: colors.background_secondary }, // Fundo padrão
             isSelected && { 
                 // Fundo quando selecionado: usa a cor primária para destaque
-                backgroundColor: activeColor || colors.primary,
+                backgroundColor: activeColor || colors.button_primary,
             },
         ];
 
         // Estilo do texto: Cores temáticas
         const textStyle = [
             styles.buttonText,
-            { color: colors.text }, // Cor do texto padrão
+            { color: colors.text_primary }, // Cor do texto padrão
             isSelected && { 
                 // Cor do texto quando selecionado: Branco para contraste
-                color: colors.text || '#FFFFFF', 
+                color: colors.text_primary || '#FFFFFF', 
             },
         ];
 

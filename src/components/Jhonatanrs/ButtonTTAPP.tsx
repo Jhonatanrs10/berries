@@ -62,7 +62,7 @@ const ButtonTTAPP: React.FC<ButtonTTAPPProps> = ({
       style={[
         styles.buttonContainer,
         // Removendo a cor de fundo do TouchableOpacity se a intenção é que a ImageBackground preencha
-        // { backgroundColor: colors.inputBackground },
+        // { backgroundColor: colors.background_secondary },
         disabled && styles.buttonDisabled,
         displayStyle,
         buttonStyle,
@@ -82,8 +82,8 @@ const ButtonTTAPP: React.FC<ButtonTTAPPProps> = ({
           <Text
             style={[
               styles.buttonText,
-              // Removendo a cor de texto dinâmica do Colors.text se a intenção é que seja sempre white para contraste
-              // { color: colors.text },
+              // Removendo a cor de texto dinâmica do colors.text_primary se a intenção é que seja sempre white para contraste
+              // { color: colors.text_primary },
               disabled && styles.textDisabled,
               textStyle,
             ]}
@@ -97,7 +97,7 @@ const ButtonTTAPP: React.FC<ButtonTTAPPProps> = ({
           <Text
             style={[
               styles.buttonText,
-              { color: colors.text }, // Aqui pode usar a cor do tema se não houver imagem
+              { color: colors.text_primary }, // Aqui pode usar a cor do tema se não houver imagem
               disabled && styles.textDisabled,
               textStyle,
             ]}

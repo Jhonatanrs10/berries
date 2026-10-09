@@ -429,7 +429,7 @@ export default function Import() {
   }
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
+    <View style={[styles.container, { backgroundColor: colors.background_primary }]}>
 
       <ButtonTT
         buttonStyle={{ marginVertical: 5 }}
@@ -444,7 +444,7 @@ export default function Import() {
         title={t('button.export') + " CSV"}
         onPress={exportarAnimes}
         disabled={exportando}
-        color={colors.success}
+        color={colors.warning}
       />
 
       <LinkModalButton
@@ -452,30 +452,30 @@ export default function Import() {
         storageKey="@link_ia_guide"
       />
 
-      <View style={[styles.statsContainer, { backgroundColor: colors.inputBackground, borderColor: colors.borderColor }]}>
+      <View style={[styles.statsContainer, { backgroundColor: colors.background_secondary, borderColor: colors.border }]}>
         {carregandoDados ? (
-          <ActivityIndicator size="large" color={colors.tint} />
+          <ActivityIndicator size="large" color={colors.button_primary} />
         ) : (
           <>
-            <View style={[styles.statItem, { backgroundColor: colors.inputBackground }]}>
-              <Text style={[styles.statLabel, { color: colors.text }]}>{t('stats.total_animes')}:</Text>
-              <Text style={[styles.statValue, { color: colors.text }]}>{totalAnimes}</Text>
+            <View style={[styles.statItem, { backgroundColor: colors.background_secondary }]}>
+              <Text style={[styles.statLabel, { color: colors.text_primary }]}>{t('stats.total_animes')}:</Text>
+              <Text style={[styles.statValue, { color: colors.text_primary }]}>{totalAnimes}</Text>
             </View>
-            <View style={[styles.statItem, { backgroundColor: colors.inputBackground }]}>
-              <Text style={[styles.statLabel, { color: colors.text }]}>{t('stats.watching')}:</Text>
+            <View style={[styles.statItem, { backgroundColor: colors.background_secondary }]}>
+              <Text style={[styles.statLabel, { color: colors.text_primary }]}>{t('stats.watching')}:</Text>
               <Text style={[styles.statValue, { color: colors.info }]}>{animes_watching}</Text>
             </View>
-            <View style={[styles.statItem, { backgroundColor: colors.inputBackground }]}>
-              <Text style={[styles.statLabel, { color: colors.text }]}>{t('stats.completed')}:</Text>
+            <View style={[styles.statItem, { backgroundColor: colors.background_secondary }]}>
+              <Text style={[styles.statLabel, { color: colors.text_primary }]}>{t('stats.completed')}:</Text>
               <Text style={[styles.statValue, { color: colors.success }]}>{animes_completed}</Text>
             </View>
-            <View style={[styles.statItem, { backgroundColor: colors.inputBackground }]}>
-              <Text style={[styles.statLabel, { color: colors.text }]}>{t('stats.plan_to_watch')}:</Text>
-              <Text style={[styles.statValue, { color: colors.warning2 }]}>{animes_plan_to_watch}</Text>
+            <View style={[styles.statItem, { backgroundColor: colors.background_secondary }]}>
+              <Text style={[styles.statLabel, { color: colors.text_primary }]}>{t('stats.plan_to_watch')}:</Text>
+              <Text style={[styles.statValue, { color: colors.danger }]}>{animes_plan_to_watch}</Text>
             </View>
-            <View style={[styles.statItem, { backgroundColor: colors.inputBackground }]}>
-              <Text style={[styles.statLabel, { color: colors.text }]}>{t('stats.total_hours')}:</Text>
-              <Text style={[styles.statValue, { color: colors.text }]}>{calcularTotalHoras()}</Text>
+            <View style={[styles.statItem, { backgroundColor: colors.background_secondary }]}>
+              <Text style={[styles.statLabel, { color: colors.text_primary }]}>{t('stats.total_hours')}:</Text>
+              <Text style={[styles.statValue, { color: colors.text_primary }]}>{calcularTotalHoras()}</Text>
             </View>
           </>
         )}
@@ -496,7 +496,7 @@ export default function Import() {
         title={t('button.clear_database')}
         onLongPress={limparBancoDadosAnimes}
         disabled={importando}
-        color={colors.error}
+        color={colors.danger}
       />
     </View>
   );

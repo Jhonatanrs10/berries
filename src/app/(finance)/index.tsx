@@ -130,10 +130,10 @@ export default function Finance() {
       style={[
         styles.transacaoContainer,
         {
-          backgroundColor: colors.inputBackground,
-          borderColor: colors.borderColor,
+          backgroundColor: colors.background_secondary,
+          borderColor: colors.border,
           borderWidth: 1,
-          shadowColor: colors.text,
+          shadowColor: colors.text_primary,
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.1,
           shadowRadius: 4,
@@ -141,25 +141,25 @@ export default function Finance() {
         }
       ]}
     >
-      <View style={[styles.transacaoHeader, { backgroundColor: colors.inputBackground }]}>
-        <View style={[styles.transacaoInfoPrincipal, { backgroundColor: colors.inputBackground }]}>
-          <Text style={[styles.transacaoDescricao, { color: colors.text }]}>
+      <View style={[styles.transacaoHeader, { backgroundColor: colors.background_secondary }]}>
+        <View style={[styles.transacaoInfoPrincipal, { backgroundColor: colors.background_secondary }]}>
+          <Text style={[styles.transacaoDescricao, { color: colors.text_primary }]}>
             {transacao.descricao}
           </Text>
-          <Text style={[styles.transacaoCategoria, { color: colors.text }]}>
+          <Text style={[styles.transacaoCategoria, { color: colors.text_primary }]}>
             {transacao.caixa}
           </Text>
-          <Text style={[styles.transacaoCategoria, { color: colors.text }]}>
+          <Text style={[styles.transacaoCategoria, { color: colors.text_primary }]}>
             {transacao.categoria}
           </Text>
         </View>
         <Text style={[
           styles.transacaoValor,
           {
-            color: transacao.acao === 'entrada' ? colors.success : colors.error,
+            color: transacao.acao === 'entrada' ? colors.success : colors.danger,
             backgroundColor: transacao.acao === 'entrada'
               ? `${colors.success}20`
-              : `${colors.error}20`,
+              : `${colors.danger}20`,
             paddingHorizontal: 10,
             paddingVertical: 5,
             borderRadius: 8,
@@ -170,46 +170,46 @@ export default function Finance() {
         </Text>
       </View>
 
-      <View style={[styles.transacaoDetalhes, { borderTopColor: colors.borderColor, backgroundColor: colors.inputBackground }]}>
-        <View style={[styles.detalheItem, { backgroundColor: colors.inputBackground }]}>
-          <Text style={[styles.detalheLabel, { color: colors.text }]}>{t('item_finance.quantity')}:</Text>
-          <Text style={[styles.detalheValor, { color: colors.text }]}>{transacao.quantidade}</Text>
+      <View style={[styles.transacaoDetalhes, { borderTopColor: colors.border, backgroundColor: colors.background_secondary }]}>
+        <View style={[styles.detalheItem, { backgroundColor: colors.background_secondary }]}>
+          <Text style={[styles.detalheLabel, { color: colors.text_primary }]}>{t('item_finance.quantity')}:</Text>
+          <Text style={[styles.detalheValor, { color: colors.text_primary }]}>{transacao.quantidade}</Text>
         </View>
-        <View style={[styles.detalheItem, { backgroundColor: colors.inputBackground }]}>
-          <Text style={[styles.detalheLabel, { color: colors.text }]}>{t('item_finance.type')}:</Text>
-          <Text style={[styles.detalheValor, { color: colors.text }]}>{transacao.tipo_transacao}</Text>
+        <View style={[styles.detalheItem, { backgroundColor: colors.background_secondary }]}>
+          <Text style={[styles.detalheLabel, { color: colors.text_primary }]}>{t('item_finance.type')}:</Text>
+          <Text style={[styles.detalheValor, { color: colors.text_primary }]}>{transacao.tipo_transacao}</Text>
         </View>
-        <View style={[styles.detalheItem, { backgroundColor: colors.inputBackground }]}>
-          <Text style={[styles.detalheLabel, { color: colors.text }]}>{t('item_finance.date')}:</Text>
-          <Text style={[styles.detalheValor, { color: colors.text }]}>{transacao.data}</Text>
+        <View style={[styles.detalheItem, { backgroundColor: colors.background_secondary }]}>
+          <Text style={[styles.detalheLabel, { color: colors.text_primary }]}>{t('item_finance.date')}:</Text>
+          <Text style={[styles.detalheValor, { color: colors.text_primary }]}>{transacao.data}</Text>
         </View>
       </View>
 
-      <View style={[styles.transacaoAcoes, { borderTopColor: colors.borderColor, backgroundColor: colors.inputBackground }]}>
+      <View style={[styles.transacaoAcoes, { borderTopColor: colors.border, backgroundColor: colors.background_secondary }]}>
         <ButtonTT
           title={t('button.edit')}
           onPress={() => editarTransacao(transacao)}
-          color="info"
+          color="button_primary"
         />
         <ButtonTT
           title="X"
           onLongPress={() => confirmarExclusao(transacao.id)}
-          color="error"
+          color="danger"
         />
       </View>
     </View>
   ), [colors, t]);
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <View style={[styles.buscaContainer, { borderColor: colors.tabIconDefault, backgroundColor: colors.inputBackground }]}>
+    <View style={[styles.container, { backgroundColor: colors.background_primary }]}>
+      <View style={[styles.buscaContainer, { borderColor: colors.tabIconDefault, backgroundColor: colors.background_secondary }]}>
         <TextInput
           style={[
             styles.buscaInput,
             {
-              color: colors.text,
-              backgroundColor: colors.background,
-              borderColor: colors.borderColor
+              color: colors.text_primary,
+              backgroundColor: colors.background_primary,
+              borderColor: colors.border
             }
           ]}
           placeholder={t('placeholder.search_transactions')}

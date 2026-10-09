@@ -1,46 +1,55 @@
 const Colors = {
-  light: {
-    text: '#000',
-    link: '#000',
-    tab: "aqua",
-    background: '#fff',
-    tint: '#2f95dc',
-    tabIconDefault: '#ccc',
-    tabIconSelected: '#2f95dc',
-    inputBackground: '#f5f5f5',
-    borderColor: '#e0e0e0',
-    modalBackground: '#fff',
-    success: '#4CAF50',
-    error: '#F44336',
-    warning: '#FFC107',
-    warning2: '#800020',
-    info: '#2196F3',
-    primary: '#2196F3',
-    grade1: '#f2fcfe',
-    grade2: '#1c92d2',
+  dark: {
+
+    grade1: '#1e2029',
+    grade2: '#12131a',
+
+    background_primary: '#12131a',
+    background_secondary: '#1e2029',
+    background_tab: '#12131a',
+    background_header: '#12131a',
+
+    button_primary: '#f4bd25',       
+    button_secondary: '#251455',
+    button_default: '#6B7280',
+    button_selected: '#f4bd25',
+
+    border: '#6B7280',
+
+    text_primary: '#FFF8EA',  
+    text_secondary: '#6B7280',
+
+    success: '#10B981',              
+    warning: '#F59E0B',              
+    danger: '#EF4444',         
+    info: '#3B82F6',
 
   },
-  dark: {
-    text: '#fff',
-    link: '#fff',
-    tab: "blue",
-    //background: '#121212',
-    //inputBackground: '#1e1e1e',
-    background: '#121212',
-    inputBackground: '#1e1e1e',
-    tint: '#fff',
-    tabIconDefault: '#666',
-    tabIconSelected: '#fff',
-    borderColor: '#333',
-    modalBackground: '#1e1e1e',
-    success: '#81C784',
-    error: '#E57373',
-    warning: '#FFD54F',
-    warning2: '#800020',
-    info: '#64B5F6',
-    primary: '#64B5F6',
-    grade1: '#373B44',
-    grade2: '#4286f4',
+  light: {
+
+    grade1: '#fffdf5',
+    grade2: '#fcfcfc',
+
+    background_primary: '#fcfcfc',
+    background_secondary: '#fffdf5',
+    background_tab: '#fffdf5',
+    background_header: '#fffdf5',
+
+    button_primary: '#f4bd25',       
+    button_secondary: '#251455',
+    button_default: '#6B7280',
+    button_selected: '#f4bd25',
+
+    border: '#6B7280',
+
+    text_primary: '#12131a',  
+    text_secondary: '#6B7280',
+
+    success: '#10B981',              
+    warning: '#F59E0B',              
+    danger: '#EF4444',         
+    info: '#3B82F6',
+
   }
 };
 

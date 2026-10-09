@@ -255,7 +255,7 @@ export default function AnimesInput() {
 
   return (
     <KeyboardAvoidingView
-      style={[styles.container, { backgroundColor: colors.background }]}
+      style={[styles.container, { backgroundColor: colors.background_primary }]}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 10}
     >
@@ -272,18 +272,18 @@ export default function AnimesInput() {
         keyboardShouldPersistTaps="handled"
         scrollEnabled={!isKeyboardVisible}
       >
-        <View style={styles.inputContainer}>
-          <Text style={[styles.label, { color: colors.text }]}>{t('input_anime.name')}</Text>
+        <View style={[styles.inputContainer, { backgroundColor: colors.background_primary }]}>
+          <Text style={[styles.label, { color: colors.text_primary }]}>{t('input_anime.name')}</Text>
           <ThemedInput
             value={nomeAnime}
             onChangeText={setNomeAnime}
             placeholder={t('placeholder.name')}
-            placeholderTextColor={colors.text}
+            placeholderTextColor={colors.text_primary}
           />
         </View>
 
-        <View style={styles.inputContainer}>
-          <Text style={[styles.label, { color: colors.text }]}>{t('input_anime.status')}</Text>
+        <View style={[styles.inputContainer, { backgroundColor: colors.background_primary }]}>
+          <Text style={[styles.label, { color: colors.text_primary }]}>{t('input_anime.status')}</Text>
           <ThemedToggle<StatusAnime>
             options={statusOptions}
             selectedValue={status}
@@ -291,8 +291,8 @@ export default function AnimesInput() {
           />
         </View>
 
-        <View style={styles.inputContainer}>
-          <Text style={[styles.label, { color: colors.text }]}>{t('input_anime.release_day')}</Text>
+        <View style={[styles.inputContainer, { backgroundColor: colors.background_primary }]}>
+          <Text style={[styles.label, { color: colors.text_primary }]}>{t('input_anime.release_day')}</Text>
           <ThemedToggle<ReleaseDay>
             options={releaseOptions}
             selectedValue={releaseDay}
@@ -300,62 +300,62 @@ export default function AnimesInput() {
           />
         </View>
 
-        <View style={styles.inputContainer}>
-          <Text style={[styles.label, { color: colors.text }]}>{t('input_anime.obs')}</Text>
+        <View style={[styles.inputContainer, { backgroundColor: colors.background_primary }]}>
+          <Text style={[styles.label, { color: colors.text_primary }]}>{t('input_anime.obs')}</Text>
           <ThemedInput
             value={observacao}
             onChangeText={setObservacao}
             placeholder={t('placeholder.about')}
-            placeholderTextColor={colors.text}
+            placeholderTextColor={colors.text_primary}
             multiline
             numberOfLines={1}
             style={styles.multilineInput}
           />
         </View>
 
-        <View style={styles.inputContainer}>
-          <Text style={[styles.label, { color: colors.text }]}>{t('input_anime.link')}</Text>
+        <View style={[styles.inputContainer, { backgroundColor: colors.background_primary }]}>
+          <Text style={[styles.label, { color: colors.text_primary }]}>{t('input_anime.link')}</Text>
           <View style={styles.linkInputContainer}>
             <ThemedInput
               value={link}
               onChangeText={setLink}
               placeholder={t('placeholder.link')}
-              placeholderTextColor={colors.text}
+              placeholderTextColor={colors.text_primary}
               style={styles.linkTextInput}
             />
             <TouchableOpacity
               onPress={handlePasteLink}
               onLongPress={() => setLink('')}
-              style={[styles.buttonInInput, { width: 40, height: 60, backgroundColor: colors.info }]}
+              style={[styles.buttonInInput, { width: 40, height: 60, backgroundColor: colors.button_primary }]}
             >
               <MaterialIcons name="content-paste" size={20} color="white" />
             </TouchableOpacity>
           </View>
         </View>
 
-        <View style={styles.inputContainer}>
+        <View style={[styles.inputContainer, { backgroundColor: colors.background_primary }]}>
           <DynamicSeasonInput
             ref={dynamicInputRef}
             labelPrefix={t('input_anime.season')}
             onChange={setDynamicSeasonsData}
             style={{
-              backgroundColor: colors.background,
+              backgroundColor: colors.background_primary,
             }}
             seasonContainerStyle={{
-              backgroundColor: colors.background,
-              borderColor: colors.borderColor,
+              backgroundColor: colors.background_primary,
+              borderColor: colors.border,
             }}
             labelStyle={{
-              backgroundColor: colors.background,
-              color: colors.text
+              backgroundColor: colors.background_primary,
+              color: colors.text_primary
             }}
           />
         </View>
 
       </ScrollView>
 
-      <View style={[styles.separator, { backgroundColor: colors.borderColor }]} />
-      <View style={styles.buttonContainer}>
+      <View style={[styles.separator, { backgroundColor: colors.border }]} />
+      <View style={[styles.buttonContainer, { backgroundColor: colors.background_primary }]}>
         {params.id && (
           <ButtonTT
             title={t('button.cancel_edit')}
@@ -363,14 +363,14 @@ export default function AnimesInput() {
               limparCampos();
               router.replace('/');
             }}
-            color={colors.error}
+            color={colors.danger}
           />
         )}
 
         <ButtonTT
           title={t('button.clean')}
           onPress={limparApenasCamposFormulario}
-          color={colors.info}
+          color={colors.button_primary}
         />
 
         <ButtonTT

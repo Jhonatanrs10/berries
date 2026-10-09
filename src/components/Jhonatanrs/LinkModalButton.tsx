@@ -136,7 +136,7 @@ export default function LinkModalButton({
           setTempLink(savedLink);
           setModalVisible(true);
         }}
-        color={color || colors.info}
+        color={color || colors.success}
       />
 
       <Modal
@@ -152,10 +152,10 @@ export default function LinkModalButton({
           <View
             style={[
               styles.modalContent,
-              { backgroundColor: colors.background, borderColor: colors.borderColor },
+              { backgroundColor: colors.background_primary, borderColor: colors.border },
             ]}
           >
-            <Text style={[styles.modalTitle, { color: colors.text }]}>
+            <Text style={[styles.modalTitle, { color: colors.text_primary }]}>
               {t('linkModal.title')}
             </Text>
 
@@ -165,7 +165,7 @@ export default function LinkModalButton({
                   value={tempLink}
                   onChangeText={setTempLink}
                   placeholder={t('linkModal.placeholder')}
-                  placeholderTextColor={colors.text}
+                  placeholderTextColor={colors.text_primary}
                   style={styles.linkTextInput}
                 />
                 <TouchableOpacity
@@ -185,9 +185,9 @@ export default function LinkModalButton({
               <ButtonTT
                 title={t('linkModal.cancel')}
                 onPress={() => setModalVisible(false)}
-                color={colors.error}
+                color={colors.danger}
               />
-              <View style={{ width: 10 }} />
+              <View style={{ width: 10, backgroundColor: "transparent" }} />
               <ButtonTT
                 title={t('linkModal.save')}
                 onPress={handleSave}

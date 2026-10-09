@@ -167,9 +167,9 @@ export default function App() {
   };
 
   return (
-    <View style={{ flex: 1, paddingTop: 10, paddingHorizontal: 0, backgroundColor: colors.background, }}>
-      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: colors.background, height: 'auto' }}>
-        <Text style={styles.value}>{t('input_market.total') + ' '}</Text>
+    <View style={{ flex: 1, paddingTop: 10, paddingHorizontal: 0, backgroundColor: colors.background_primary, }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: colors.background_primary, height: 'auto' }}>
+        <Text style={[styles.value, { color: colors.text_primary }]}>{t('input_market.total') + ' '}</Text>
         <Text
           style={[styles.value, { color: '#007700' }]}
           numberOfLines={1}
@@ -180,28 +180,12 @@ export default function App() {
         </Text>
       </View>
 
-      <ProductSelector
-        selectedProduct={selectedProduct}
-        onSelect={setSelectedProduct}
-        titleText={t('input_market.search_title')}
-        placeholderText={t('placeholder.product_name')}
-        closeText={t('button.close')}
-        addText={t('button.add')}
-      />
+      
 
-      <Text style={styles.value}>{input2}x {formatToCurrency(input1)}</Text>
-
-      <QuantitySelector onQuantityChange={handleQuantityChange} initialQuantity={parseInt(input2, 10)} />
-
-      <CalculatorButtons
-        onPressNumber={handleNumberPressInput1}
-        onBackspace={handleBackspaceInput1}
-        onStartBackspaceHold={clearInput1}
-        onStopBackspaceHold={() => { }}
-      />
+      
 
       {editIndex !== null ? (
-        <View style={styles.editActionContainer}>
+        <View style={[styles.editActionContainer, {backgroundColor: colors.background_primary}]}>
 
           <Pressable
             style={[styles.editButton, { backgroundColor: colors.success, flex: 1 }]}
@@ -211,17 +195,37 @@ export default function App() {
           </Pressable>
 
           <Pressable
-            style={[styles.editButton, { backgroundColor: colors.error, marginLeft: 8, paddingHorizontal: 30 }]}
+            style={[styles.editButton, { backgroundColor: colors.danger, marginLeft: 8, paddingHorizontal: 30 }]}
             onPress={limparFormulario}
           >
             <Text style={styles.addButtonText}>X</Text>
           </Pressable>
         </View>
       ) : (
-        <Pressable style={[styles.addButton, { backgroundColor: colors.info, alignSelf: 'center' }]} onPress={salvarOuAtualizarItem}>
+        <Pressable style={[styles.addButton, { backgroundColor: colors.success, alignSelf: 'center' }]} onPress={salvarOuAtualizarItem}>
           <Text style={styles.addButtonText}>+</Text>
         </Pressable>
       )}
+
+      <ProductSelector
+        selectedProduct={selectedProduct}
+        onSelect={setSelectedProduct}
+        titleText={t('input_market.search_title')}
+        placeholderText={t('placeholder.product_name')}
+        closeText={t('button.close')}
+        addText={t('button.add')}
+      />
+
+      <QuantitySelector onQuantityChange={handleQuantityChange} initialQuantity={parseInt(input2, 10)} />
+
+      <Text style={[styles.value, { color: colors.text_primary }]}>{input2}x {formatToCurrency(input1)}</Text>
+      <CalculatorButtons
+        onPressNumber={handleNumberPressInput1}
+        onBackspace={handleBackspaceInput1}
+        onStartBackspaceHold={clearInput1}
+        onStopBackspaceHold={() => { }}
+      />
+
     </View>
   );
 }

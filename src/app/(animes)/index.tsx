@@ -50,10 +50,10 @@ const AnimeItem: React.FC<AnimeItemProps> = ({ anime, colors, abrirLink, editarA
       style={[
         styles.animeContainer,
         {
-          backgroundColor: colors.inputBackground,
-          borderColor: colors.borderColor,
+          backgroundColor: colors.background_secondary,
+          borderColor: colors.border,
           borderWidth: 1,
-          shadowColor: colors.text,
+          shadowColor: colors.text_primary,
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.1,
           shadowRadius: 4,
@@ -61,9 +61,9 @@ const AnimeItem: React.FC<AnimeItemProps> = ({ anime, colors, abrirLink, editarA
         }
       ]}
     >
-      <View style={[styles.animeHeader, { backgroundColor: colors.inputBackground }]}>
-        <View style={[styles.animeInfoPrincipal, { backgroundColor: colors.inputBackground }]}>
-          <Text style={[styles.animeNome, { color: colors.text }]}>
+      <View style={[styles.animeHeader, { backgroundColor: colors.background_secondary }]}>
+        <View style={[styles.animeInfoPrincipal, { backgroundColor: colors.background_secondary }]}>
+          <Text style={[styles.animeNome, { color: colors.text_primary }]}>
             {anime.nome}
           </Text>
           <Text style={[
@@ -71,10 +71,10 @@ const AnimeItem: React.FC<AnimeItemProps> = ({ anime, colors, abrirLink, editarA
             {
               color: anime.status === 'watching' ? colors.info :
                 anime.status === 'completed' ? colors.success :
-                  colors.warning2, // Cor para plan_to_watch
+                  colors.danger, // Cor para plan_to_watch
               backgroundColor: anime.status === 'watching' ? `${colors.info}20` :
                 anime.status === 'completed' ? `${colors.success}20` :
-                  `${colors.warning2}20`,
+                  `${colors.danger}20`,
               paddingHorizontal: 10,
               paddingVertical: 5,
               borderRadius: 8,
@@ -90,19 +90,19 @@ const AnimeItem: React.FC<AnimeItemProps> = ({ anime, colors, abrirLink, editarA
         </View>
       </View>
 
-      <View style={[styles.animeDetalhes, { borderTopColor: colors.borderColor, backgroundColor: colors.inputBackground }]}>
+      <View style={[styles.animeDetalhes, { borderTopColor: colors.border, backgroundColor: colors.background_secondary }]}>
         {anime.release_day && (
-          <View style={[styles.detalheItem, { backgroundColor: colors.inputBackground }]}>
-            <Text style={[styles.detalheLabel, { color: colors.text }]}>{t('item.release')}:</Text>
-            <Text style={[styles.detalheValor, { color: colors.text }]}>
+          <View style={[styles.detalheItem, { backgroundColor: colors.background_secondary }]}>
+            <Text style={[styles.detalheLabel, { color: colors.text_primary }]}>{t('item.release')}:</Text>
+            <Text style={[styles.detalheValor, { color: colors.text_primary }]}>
               {t(`release.${anime.release_day}`)}
             </Text>
           </View>
         )}
         {anime.seasons && (
-          <View style={[styles.detalheItem, { backgroundColor: colors.inputBackground, flexDirection: 'row', justifyContent: 'space-between', flexShrink: 1 }]}>
-            <Text style={[styles.detalheLabel, { color: colors.text }]}>{t('item.episodes')}:</Text>
-            <Text style={[styles.detalheValor, { color: colors.text, flexShrink: 1, marginStart: 10 }]}>
+          <View style={[styles.detalheItem, { backgroundColor: colors.background_secondary, flexDirection: 'row', justifyContent: 'space-between', flexShrink: 1 }]}>
+            <Text style={[styles.detalheLabel, { color: colors.text_primary }]}>{t('item.episodes')}:</Text>
+            <Text style={[styles.detalheValor, { color: colors.text_primary, flexShrink: 1, marginStart: 10 }]}>
               {(() => {
                 if (!anime.seasons || anime.seasons.trim() === '') {
                   return 'N/A';
@@ -148,36 +148,36 @@ const AnimeItem: React.FC<AnimeItemProps> = ({ anime, colors, abrirLink, editarA
           </View>
         )}
         {anime.observacao && (
-          <View style={[styles.detalheItem, { backgroundColor: colors.inputBackground }]}>
-            <Text style={[styles.detalheLabel, { color: colors.text }]}>{t('item.obs')}: </Text>
-            <Text style={[styles.detalheValor, { color: colors.text, flex: 1, flexWrap: 'wrap' }]}>{anime.observacao}</Text>
+          <View style={[styles.detalheItem, { backgroundColor: colors.background_secondary }]}>
+            <Text style={[styles.detalheLabel, { color: colors.text_primary }]}>{t('item.obs')}: </Text>
+            <Text style={[styles.detalheValor, { color: colors.text_primary, flex: 1, flexWrap: 'wrap' }]}>{anime.observacao}</Text>
           </View>
         )}
       </View>
 
-      <View style={[styles.animeAcoes, { borderTopColor: colors.borderColor, backgroundColor: colors.inputBackground }]}>
+      <View style={[styles.animeAcoes, { borderTopColor: colors.border, backgroundColor: colors.background_secondary }]}>
         <ButtonTT
           title={t('button.watch')}
           onPress={() => abrirLink(anime.link)}
           onLongPress={() => abrirLink(`https://www.google.com/search?q=${t('search.watch')}+${anime.nome}`)}
-          color={colors.info}
+          color={colors.button_primary}
         />
         <ButtonTT
           title={t('button.about')}
           onPress={() => abrirLink("https://myanimelist.net/search/all?q=" + anime.nome)}
           onLongPress={() => abrirLink("https://anilist.co/search/anime?search=" + anime.nome)}
-          color={colors.info}
+          color={colors.button_primary}
         />
         <ButtonTT
           title={t('button.edit')}
           onPress={() => editarAnime(anime)}
-          color={colors.info}
+          color={colors.button_primary}
         />
 
         <ButtonTT
           title="X"
           onLongPress={() => confirmarExclusao(anime.id)}
-          color="error"
+          color="danger"
         />
       </View>
     </View>
@@ -356,15 +356,15 @@ export default function MeusAnimes() {
 
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <View style={[styles.buscaContainer, { borderColor: colors.tabIconDefault, backgroundColor: colors.inputBackground }]}>
+    <View style={[styles.container, { backgroundColor: colors.background_primary }]}>
+      <View style={[styles.buscaContainer, { borderColor: colors.button_default, backgroundColor: colors.background_secondary }]}>
         <TextInput
           style={[
             styles.buscaInput,
             {
-              color: colors.text,
-              backgroundColor: colors.background,
-              borderColor: colors.borderColor
+              color: colors.text_primary,
+              backgroundColor: colors.background_primary,
+              borderColor: colors.border
             }
           ]}
           placeholder={t('placeholder.search_animes')}
@@ -378,7 +378,7 @@ export default function MeusAnimes() {
       </View>
 
       {!busca && (
-        <View style={[styles.dayFilterContainer, { backgroundColor: colors.background }]}>
+        <View style={[styles.dayFilterContainer, { backgroundColor: colors.background_primary }]}>
           <FlatList // Usando FlatList para os botões de filtro de dia horizontalmente
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -391,15 +391,15 @@ export default function MeusAnimes() {
                 style={[
                   styles.dayFilterButton,
                   {
-                    backgroundColor: selectedDayFilter === day.value ? colors.tint : colors.inputBackground,
-                    borderColor: selectedDayFilter === day.value ? colors.tint : colors.borderColor,
+                    backgroundColor: selectedDayFilter === day.value ? colors.text_primary : colors.background_secondary,
+                    borderColor: selectedDayFilter === day.value ? colors.text_primary : colors.border,
                   },
                 ]}
                 onPress={() => setSelectedDayFilter(day.value === selectedDayFilter ? null : day.value)}
               >
                 <Text style={[
                   styles.dayFilterButtonText,
-                  { color: selectedDayFilter === day.value ? colors.background : colors.text },
+                  { color: selectedDayFilter === day.value ? colors.background_primary : colors.text_primary },
                 ]}>
                   {day.label}
                 </Text>
@@ -424,7 +424,7 @@ export default function MeusAnimes() {
           />
         )}
         ListEmptyComponent={() => ( // Componente exibido quando a lista está vazia
-          <Text style={[styles.noAnimesText, { color: colors.text }]}>{t('return.no_anime_found')}</Text>
+          <Text style={[styles.noAnimesText, { color: colors.text_primary }]}>{t('return.no_anime_found')}</Text>
         )}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}

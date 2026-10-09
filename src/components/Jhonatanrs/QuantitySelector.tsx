@@ -82,25 +82,25 @@ const QuantitySelector = ({ onQuantityChange, initialQuantity = 1 }: Props) => {
     const colors = Colors[colorScheme];
 
     return (
-        <View style={[styles.container,{backgroundColor: colors.backgroundColor}]}>
+        <View style={[styles.container,{backgroundColor: colors.background_primaryColor}]}>
             <Pressable
-                style={[styles.button,{backgroundColor: colors.inputBackground}]}
+                style={[styles.button,{backgroundColor: colors.background_secondary}]}
                 onPress={handleDecrement}
                 onLongPress={handleLongPressDecrementStart} // Inicia o decremento de 10 em 10
                 onPressOut={handleLongPressEnd} // Para o decremento quando solta
                 delayLongPress={300} // Segura por 2 segundos para ativar o -10
             >
-                <Text style={[styles.buttonText,{color: colors.text}]}>-</Text>
+                <Text style={[styles.buttonText,{color: colors.text_primary}]}>-</Text>
             </Pressable>
 
             <Pressable
-                style={[styles.button,{backgroundColor: colors.inputBackground}]}
+                style={[styles.button,{backgroundColor: colors.background_secondary}]}
                 onPress={handleIncrement}
                 onLongPress={handleLongPressIncrementStart} // Inicia o incremento de 10 em 10
                 onPressOut={handleLongPressEnd} // Para o incremento quando solta
                 delayLongPress={300} // Segura por 2 segundos para ativar o +10
             >
-                <Text style={[styles.buttonText,{color: colors.text}]}>+</Text>
+                <Text style={[styles.buttonText,{color: colors.text_primary}]}>+</Text>
             </Pressable>
         </View>
     );

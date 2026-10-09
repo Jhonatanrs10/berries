@@ -181,7 +181,7 @@ export default function ProductsScreen() {
   };
 
   return (
-    <ScrollView contentContainerStyle={[styles.container, { backgroundColor: colors.background }]}>
+    <ScrollView contentContainerStyle={[styles.container, { backgroundColor: colors.background_primary }]}>
 
       <View style={styles.header}>
         <View style={styles.rowButtons}>
@@ -194,7 +194,7 @@ export default function ProductsScreen() {
 
           <Pressable
             onPress={exportProductsToFile}
-            style={[styles.button, styles.halfButton, { backgroundColor: colors.success }]}
+            style={[styles.button, styles.halfButton, { backgroundColor: colors.warning }]}
           >
             <Text style={styles.buttonText}>{t('button.export')} TXT</Text>
           </Pressable>
@@ -211,7 +211,7 @@ export default function ProductsScreen() {
 
           <Pressable
             onLongPress={clearMarketHistory}
-            style={[styles.button, styles.halfButton, { backgroundColor: colors.error || '#FF3B30' }]}
+            style={[styles.button, styles.halfButton, { backgroundColor: colors.danger || '#FF3B30' }]}
           >
             <Text style={styles.buttonText}>{t('return.clear_history')}</Text>
           </Pressable>
@@ -221,7 +221,7 @@ export default function ProductsScreen() {
       <View style={styles.footer}>
         <Pressable
           onLongPress={clearProducts}
-          style={[styles.button, { backgroundColor: colors.error || '#FF3B30' }]}
+          style={[styles.button, { backgroundColor: colors.danger || '#FF3B30' }]}
         >
           <Text style={styles.buttonText}>{t('button.clear_database')}</Text>
         </Pressable>

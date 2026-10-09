@@ -12,9 +12,9 @@ export function ThemedInput(props: ThemedInputProps) {
     <DefaultTextInput
       style={[
         {
-          color: colors.text,
-          backgroundColor: colors.inputBackground,
-          borderColor: colors.borderColor,
+          color: colors.text_primary,
+          backgroundColor: colors.background_secondary,
+          borderColor: colors.border,
           borderWidth: 0,
           borderRadius: 0,
           padding: 10,
@@ -24,7 +24,7 @@ export function ThemedInput(props: ThemedInputProps) {
         },
         style,
       ]}
-      placeholderTextColor={colors.text + '80'}
+      placeholderTextColor={colors.text_primary + '80'}
       {...otherProps}
     />
   );

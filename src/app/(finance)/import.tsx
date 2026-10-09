@@ -820,7 +820,7 @@ export default function Import() {
   ];
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} style={[styles.container, { backgroundColor: colors.background }]}>
+    <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} style={[styles.container, { backgroundColor: colors.background_primary }]}>
 
       <ButtonTT
         buttonStyle={{ marginVertical: 5 }}
@@ -834,7 +834,7 @@ export default function Import() {
         title={t('button.export') + " CSV"}
         onPress={exportarTransacoes}
         disabled={importando}
-        color={colors.success}
+        color={colors.warning}
       />
 
       <ButtonTT
@@ -842,16 +842,16 @@ export default function Import() {
         title={t('button.haircut')}
         onPress={cadastrarCorteCabelo}
         disabled={importando}
-        color={colors.info}
+        color={colors.success}
       />
 
-      <View style={styles.dateFilterContainer}>
-        <View style={styles.datePickerRow}>
-          <Text style={[styles.dateLabel, { color: colors.text }]}>{t('return.from')}:</Text>
+      <View style={[styles.dateFilterContainer, { backgroundColor: colors.background_secondary }]}>
+        <View style={[styles.datePickerRow, { backgroundColor: colors.background_secondary }]}>
+          <Text style={[styles.dateLabel, { color: colors.text_primary }]}>{t('return.from')}:</Text>
           <ButtonTT
             title={startDate ? formatarData(startDate) : t('return.date_start')}
             onPress={() => setShowDatePickerStart(true)}
-            color={colors.primary}
+            color={colors.button_primary}
             buttonStyle={styles.datePickerButton}
           />
         </View>
@@ -867,12 +867,12 @@ export default function Import() {
           />
         )}
 
-        <View style={styles.datePickerRow}>
-          <Text style={[styles.dateLabel, { color: colors.text }]}>{t('return.to')}:</Text>
+        <View style={[styles.datePickerRow, { backgroundColor: colors.background_secondary }]}>
+          <Text style={[styles.dateLabel, { color: colors.text_primary }]}>{t('return.to')}:</Text>
           <ButtonTT
             title={endDate ? formatarData(endDate) : t('return.date_end')}
             onPress={() => setShowDatePickerEnd(true)}
-            color={colors.primary}
+            color={colors.button_primary}
             buttonStyle={styles.datePickerButton}
           />
         </View>
@@ -899,7 +899,7 @@ export default function Import() {
           buttonStyle={{ marginVertical: 5 }}
           title={t('button.clean')}
           onPress={limparFiltro}
-          color={colors.warning}
+          color={colors.info}
         />
 
         <ButtonTT
@@ -907,18 +907,18 @@ export default function Import() {
           title={t('button.generated_pdf')}
           onPress={gerarRelatorioPdf}
           disabled={exportando}
-          color={'#007bff'}
+          color={colors.warning}
         />
       </View>
 
-      <View style={styles.resumoGeralContainer}>
-        <Text style={[styles.resumoGeralLabel, { color: colors.text }]}>
+      <View style={[styles.resumoGeralContainer, { backgroundColor: colors.background_secondary }]}>
+        <Text style={[styles.resumoGeralLabel, { color: colors.text_primary }]}>
           {t('return.current_value_total')}:
         </Text>
         <Text
           style={[
             styles.resumoGeralValor,
-            { color: valorAtual >= 0 ? colors.success : colors.error }
+            { color: valorAtual >= 0 ? colors.success : colors.danger }
           ]}
         >
           {valorAtual.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
@@ -926,24 +926,24 @@ export default function Import() {
       </View>
 
       {carregandoResumo ? (
-        <Text style={{ color: colors.text }}>Calculando resumo...</Text>
+        <Text style={{ color: colors.text_primary }}>Calculando resumo...</Text>
       ) : (
         <>
           {Object.keys(resumoPorCaixa).length > 0 ? (
             Object.entries(resumoPorCaixa)
               .sort(([caixaA], [caixaB]) => caixaA.localeCompare(caixaB))
               .map(([caixa, dadosCaixa]) => (
-                <View key={caixa} style={styles.resumoCaixaContainer}>
-                  <Text style={[styles.resumoCaixaTitulo, { color: colors.text }]}>
+                <View key={caixa} style={[styles.resumoCaixaContainer, { backgroundColor: colors.background_secondary }]}>
+                  <Text style={[styles.resumoCaixaTitulo, { color: colors.text_primary }]}>
                     {t('input_finance.wallet')}: {caixa}
                   </Text>
-                  <Text style={[styles.resumoValorGeral, { color: colors.text }]}>
+                  <Text style={[styles.resumoValorGeral, { color: colors.text_primary,}]}>
                     {t('return.total_cash_inflow')}:  {(dadosCaixa.totalEntradasCaixa / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                   </Text>
-                  <Text style={[styles.resumoValorGeral, { color: colors.text }]}>
+                  <Text style={[styles.resumoValorGeral, { color: colors.text_primary }]}>
                     {t('return.total_cash_outflow')}:  {(dadosCaixa.totalSaidasCaixa / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                   </Text>
-                  <Text style={[styles.resumoValorGeral, { color: colors.text }]}>
+                  <Text style={[styles.resumoValorGeral, { color: colors.text_primary }]}>
                     {t('return.total_cash_balance')}:  {((dadosCaixa.totalEntradasCaixa - dadosCaixa.totalSaidasCaixa) / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                   </Text>
 
@@ -961,36 +961,36 @@ export default function Import() {
                           const nomeMes = mesesNomes[parseInt(mesNumeroStr, 10) - 1];
 
                           return (
-                            <View key={`${caixa}-${mesAnoChave}`} style={styles.resumoMesContainer}>
-                              <Text style={[styles.resumoMesTitulo, { color: colors.text }]}>
+                            <View key={`${caixa}-${mesAnoChave}`} style={[styles.resumoMesContainer, { backgroundColor: colors.background_secondary }]}>
+                              <Text style={[styles.resumoMesTitulo, { color: colors.text_primary }]}>
                                 {t('month')}: {nomeMes}/{anoStr}
                               </Text>
-                              <Text style={[styles.resumoValorMes, { color: colors.text }]}>
+                              <Text style={[styles.resumoValorMes, { color: colors.text_primary }]}>
                                 {t('return.generated_income_month')}: {(dadosMes.totalEntradasMes / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                               </Text>
-                              <Text style={[styles.resumoValorMes, { color: colors.text }]}>
+                              <Text style={[styles.resumoValorMes, { color: colors.text_primary }]}>
                                 {t('return.generated_expense_month')}: {(dadosMes.totalSaidasMes / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                               </Text>
-                              <Text style={[styles.resumoValorMes, { color: colors.text }]}>
+                              <Text style={[styles.resumoValorMes, { color: colors.text_primary }]}>
                                 {t('return.generated_balance_month')}: {((dadosMes.totalEntradasMes - dadosMes.totalSaidasMes) / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                               </Text>
 
-                              <View style={[styles.linhaDivisoriaInterna, { backgroundColor: colors.borderColor }]} />
+                              <View style={[styles.linhaDivisoriaInterna, { backgroundColor: colors.border }]} />
 
                               {Object.entries(dadosMes.categorias)
                                 .sort(([catA], [catB]) => catA.localeCompare(catB))
                                 .map(([categoria, dadosCategoria]) => (
-                                  <View key={`${caixa}-${mesAnoChave}-${categoria}`} style={styles.resumoCategoriaItem}>
-                                    <Text style={[styles.resumoCategoriaNome, { color: colors.text }]}>
+                                  <View key={`${caixa}-${mesAnoChave}-${categoria}`} style={[styles.resumoCategoriaItem, { backgroundColor: colors.background_secondary }]}>
+                                    <Text style={[styles.resumoCategoriaNome, { color: colors.text_primary }]}>
                                       - {categoria}:
                                     </Text>
-                                    <Text style={[styles.resumoValor, { color: colors.text }]}>
+                                    <Text style={[styles.resumoValor, { color: colors.text_primary }]}>
                                       {t('return.generated_income')}: {(dadosCategoria.totalEntradasCategoria / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                                     </Text>
-                                    <Text style={[styles.resumoValor, { color: colors.text }]}>
+                                    <Text style={[styles.resumoValor, { color: colors.text_primary }]}>
                                       {t('return.generated_expense')}: {(dadosCategoria.totalSaidasCategoria / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                                     </Text>
-                                    <Text style={[styles.resumoValor, { color: colors.text }]}>
+                                    <Text style={[styles.resumoValor, { color: colors.text_primary }]}>
                                       {t('return.generated_balance')}: {((dadosCategoria.totalEntradasCategoria - dadosCategoria.totalSaidasCategoria) / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                                     </Text>
                                   </View>
@@ -1000,16 +1000,16 @@ export default function Import() {
                         })}
                     </>
                   )}
-                  <View style={[styles.linhaDivisoria, { backgroundColor: colors.borderColor }]} />
+                  <View style={[styles.linhaDivisoria, { backgroundColor: colors.border }]} />
                 </View>
               ))
           ) : (
-            <Text style={{ color: colors.text }}>{t('return.generated_resume')}</Text>
+            <Text style={{ color: colors.text_primary }}>{t('return.generated_resume')}</Text>
           )}
         </>
       )}
 
-      <View style={styles.bottomSpacer} />
+      <View style={[styles.bottomSpacer, { backgroundColor: 'transparent' }]} />
       {__DEV__ && (<ButtonTT
         buttonStyle={{ marginVertical: 5 }}
         displayButton={true}
@@ -1023,7 +1023,7 @@ export default function Import() {
         title={t('button.clear_database')}
         onLongPress={limparBancoDados}
         disabled={importando}
-        color={colors.error}
+        color={colors.danger}
       />
     </ScrollView>
   );

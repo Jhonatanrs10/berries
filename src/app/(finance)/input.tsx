@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import React, { useState, useEffect, useCallback } from 'react';
 import ButtonTT from '../../components/Jhonatanrs/ButtonTT';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import {
   Button,
   Alert,
@@ -72,7 +73,7 @@ export default function Input() {
 
   const getStatusColor = () => {
     if (acao === 'entrada') return colors.success;
-    if (acao === 'saida') return colors.warning2;
+    if (acao === 'saida') return colors.danger;
   };
 
   const [showCaixaModal, setShowCaixaModal] = useState(false);
@@ -266,7 +267,7 @@ export default function Input() {
 
   return (
     <KeyboardAvoidingView
-      style={[styles.container, { backgroundColor: colors.background }]}
+      style={[styles.container, { backgroundColor: colors.background_primary }]}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 10}
     >
@@ -283,23 +284,23 @@ export default function Input() {
         contentContainerStyle={styles.formContent}
         keyboardShouldPersistTaps="handled"
       >
-        <View style={styles.inputContainer}>
-          <Text style={[styles.label, { color: colors.text }]}>{t('input_finance.description')}</Text>
+        <View style={[styles.inputContainer, { backgroundColor: colors.background_primary }]}>
+          <Text style={[styles.label, { color: colors.text_primary }]}>{t('input_finance.description')}</Text>
           <ThemedInput
             value={descricao}
             onChangeText={setDescricao}
             placeholder={t('placeholder.transaction')}
-            placeholderTextColor={colors.text}
+            placeholderTextColor={colors.text_primary}
           />
         </View>
 
-        <View style={styles.inputContainer}>
-          <Text style={[styles.label, { color: colors.text }]}>{t('input_finance.wallet')}</Text>
+        <View style={[styles.inputContainer, { backgroundColor: colors.background_primary }]}>
+          <Text style={[styles.label, { color: colors.text_primary }]}>{t('input_finance.wallet')}</Text>
           <View style={[
             styles.inputWithButtonContainer,
             {
-              borderColor: colors.borderColor,
-              backgroundColor: colors.inputBackground,
+              borderColor: colors.border,
+              backgroundColor: colors.background_secondary,
             }
           ]}>
             <ThemedInput
@@ -310,25 +311,25 @@ export default function Input() {
                 filtrarCaixas(text);
               }}
               placeholder={t('placeholder.wallet')}
-              placeholderTextColor={colors.text}
+              placeholderTextColor={colors.text_primary}
               style={styles.inputInsideButtonContainer}
             />
             <TouchableOpacity
               onPress={() => setShowCaixaModal(true)}
-              style={[styles.buttonOnRight, { width: 40, backgroundColor: colors.primary }]}
+              style={[styles.buttonOnRight, { width: 40, backgroundColor: colors.button_primary }]}
             >
               <AntDesign name="select" size={20} color="white" />
             </TouchableOpacity>
           </View>
         </View>
 
-        <View style={styles.inputContainer}>
-          <Text style={[styles.label, { color: colors.text }]}>{t('input_finance.category')}</Text>
+        <View style={[styles.inputContainer, { backgroundColor: colors.background_primary }]}>
+          <Text style={[styles.label, { color: colors.text_primary }]}>{t('input_finance.category')}</Text>
           <View style={[
             styles.inputWithButtonContainer,
             {
-              borderColor: colors.borderColor,
-              backgroundColor: colors.inputBackground,
+              borderColor: colors.border,
+              backgroundColor: colors.background_secondary,
             }
           ]}>
             <ThemedInput
@@ -339,31 +340,31 @@ export default function Input() {
                 filtrarCategorias(text);
               }}
               placeholder={t('placeholder.category')}
-              placeholderTextColor={colors.text}
+              placeholderTextColor={colors.text_primary}
               style={styles.inputInsideButtonContainer}
             />
             <TouchableOpacity
               onPress={() => setShowCategoriaModal(true)}
-              style={[styles.buttonOnRight, { width: 40, backgroundColor: colors.primary }]}
+              style={[styles.buttonOnRight, { width: 40, backgroundColor: colors.button_primary }]}
             >
               <AntDesign name="select" size={20} color="white" />
             </TouchableOpacity>
           </View>
         </View>
 
-        <View style={styles.inputContainer}>
-          <Text style={[styles.label, { color: colors.text }]}>{t('input_finance.value')}</Text>
+        <View style={[styles.inputContainer, { backgroundColor: colors.background_primary }]}>
+          <Text style={[styles.label, { color: colors.text_primary }]}>{t('input_finance.value')}</Text>
           <ThemedInput
             value={valor}
             onChangeText={handleValorChange}
             keyboardType="numeric"
             placeholder="R$ 0,00"
-            placeholderTextColor={colors.text}
+            placeholderTextColor={colors.text_primary}
           />
         </View>
 
-        <View style={styles.inputContainer}>
-          <Text style={[styles.label, { color: colors.text }]}>{t('input_finance.quantity')}</Text>
+        <View style={[styles.inputContainer, { backgroundColor: colors.background_primary }]}>
+          <Text style={[styles.label, { color: colors.text_primary }]}>{t('input_finance.quantity')}</Text>
           <QuantityInput
             value={quantidade}
             onIncrement={handleIncrement}
@@ -373,9 +374,9 @@ export default function Input() {
           />
         </View>
 
-        <View style={styles.inputContainer}>
-          <Text style={[styles.label, { color: colors.text }]}>{t('input_finance.type')}</Text>
-          <View style={styles.chipGridContainer}>
+        <View style={[styles.inputContainer, { backgroundColor: colors.background_primary }]}>
+          <Text style={[styles.label, { color: colors.text_primary }]}>{t('input_finance.type')}</Text>
+          <View style={[styles.chipGridContainer, { backgroundColor: colors.background_primary }]}>
             {(['PIX', 'Dinheiro', 'Boleto', 'Distinto', 'Débito', 'Crédito', 'TED', 'DOC'] as TipoTransacao[]).map((tipo) => {
               const isSelected = tipoTransacao === tipo;
               return (
@@ -385,15 +386,15 @@ export default function Input() {
                   style={[
                     styles.chipButton,
                     {
-                      backgroundColor: isSelected ? colors.primary : colors.inputBackground,
-                      borderColor: isSelected ? colors.primary : colors.borderColor,
+                      backgroundColor: isSelected ? colors.button_primary : colors.background_secondary,
+                      borderColor: isSelected ? colors.button_primary : colors.border,
                     },
                   ]}
                 >
                   <Text
                     style={[
                       styles.chipText,
-                      { color: isSelected ? '#FFFFFF' : colors.text, fontWeight: isSelected ? 'bold' : 'normal' },
+                      { color: isSelected ? '#FFFFFF' : colors.text_primary, fontWeight: isSelected ? 'bold' : 'normal' },
                     ]}
                   >
                     {tipo}
@@ -404,8 +405,8 @@ export default function Input() {
           </View>
         </View>
 
-        <View style={styles.inputContainer}>
-          <Text style={[styles.label, { color: colors.text }]}>{t('input_finance.action')}</Text>
+        <View style={[styles.inputContainer, { backgroundColor: colors.background_primary }]}>
+          <Text style={[styles.label, { color: colors.text_primary }]}>{t('input_finance.action')}</Text>
           <ThemedToggle<Acao>
             options={acaoOptions}
             selectedValue={acao}
@@ -415,35 +416,35 @@ export default function Input() {
           />
         </View>
 
-        <View style={styles.inputContainer}>
-          <Text style={[styles.label, { color: colors.text }]}>{t('input_finance.date')}</Text>
+        <View style={[styles.inputContainer, { backgroundColor: colors.background_primary }]}>
+          <Text style={[styles.label, { color: colors.text_primary }]}>{t('input_finance.date')}</Text>
 
-          <View style={[styles.combinedDateContainer, { borderColor: colors.borderColor, backgroundColor: colors.inputBackground }]}>
+          <View style={[styles.combinedDateContainer, { borderColor: colors.border, backgroundColor: colors.background_secondary }]}>
 
             <TouchableOpacity
               onPress={() => setShowDatePicker(true)}
               style={styles.dateInputButtonFlex}
             >
-              <Text style={[styles.dateInputText, { color: colors.text }]}>
+              <Text style={[styles.dateInputText, { color: colors.text_primary }]}>
                 {data || "Selecionar Data"}
               </Text>
             </TouchableOpacity>
 
             <ButtonTT
               buttonStyle={styles.inlineButton}
-              title={t('button.today')}
+              title={<MaterialIcons name="today" size={24} color="white" />}
               onPress={() => {
                 const today = new Date();
                 setData(getTodayDate());
                 setSelectedDateObject(today);
               }}
-              color={colors.info}
+              color={colors.button_primary}
             />
           </View>
 
           {showDatePicker && (
             <DateTimePicker
-              style={{ backgroundColor: colors.inputBackground }}
+              style={{ backgroundColor: colors.background_secondary }}
               value={selectedDateObject}
               mode="date"
               display="default"
@@ -453,9 +454,9 @@ export default function Input() {
         </View>
       </ScrollView>
 
-      <View style={[styles.separator, { backgroundColor: colors.borderColor }]} />
+      <View style={[styles.separator, { backgroundColor: colors.border }]} />
 
-      <View style={styles.buttonContainer}>
+      <View style={[styles.buttonContainer, { backgroundColor: colors.background_primary }]}>
         {params.id && (
           <ButtonTT
             title={t('button.cancel_edit')}
@@ -463,7 +464,7 @@ export default function Input() {
               limparCampos();
               router.replace('/');
             }}
-            color={colors.error}
+            color={colors.danger}
           />
         )}
         <ButtonTT
@@ -485,8 +486,8 @@ export default function Input() {
         onRequestClose={() => setShowCaixaModal(false)}
       >
         <View style={styles.centeredView}>
-          <View style={[styles.modalView, { backgroundColor: colors.background, borderColor: colors.borderColor }]}>
-            <Text style={[styles.modalTitle, { color: colors.text }]}>{t('placeholder.wallet')}</Text>
+          <View style={[styles.modalView, { backgroundColor: colors.background_primary, borderColor: colors.border }]}>
+            <Text style={[styles.modalTitle, { color: colors.text_primary }]}>{t('placeholder.wallet')}</Text>
             <ThemedInput
               placeholder={t('placeholder.wallet_create')}
               value={caixa}
@@ -495,7 +496,7 @@ export default function Input() {
                 filtrarCaixas(text);
               }}
               style={styles.modalSearchInput}
-              placeholderTextColor={colors.text}
+              placeholderTextColor={colors.text_primary}
             />
             <FlatList
               data={caixasFiltradas.length > 0 ? caixasFiltradas : caixas}
@@ -505,7 +506,7 @@ export default function Input() {
                   style={[
                     styles.modalItem,
                     {
-                      borderBottomColor: colors.borderColor,
+                      borderBottomColor: colors.border,
                       backgroundColor: item === caixa ? `${colors.info}20` : 'transparent'
                     }
                   ]}
@@ -514,12 +515,12 @@ export default function Input() {
                     setShowCaixaModal(false);
                   }}
                 >
-                  <Text style={{ color: colors.text }}>{item}</Text>
+                  <Text style={{ color: colors.text_primary }}>{item}</Text>
                 </TouchableOpacity>
               )}
               style={styles.modalList}
             />
-            <View style={{ flexDirection: 'row' }}>
+            <View style={{ flexDirection: 'row', backgroundColor: colors.background_primary }}>
               <ButtonTT title={t('button.clean')} onPress={() => setCaixa('')} color={colors.info} />
               <ButtonTT title={t('button.create')} onPress={() => setShowCaixaModal(false)} color={colors.success} />
             </View>
@@ -534,8 +535,8 @@ export default function Input() {
         onRequestClose={() => setShowCategoriaModal(false)}
       >
         <View style={styles.centeredView}>
-          <View style={[styles.modalView, { backgroundColor: colors.background, borderColor: colors.borderColor }]}>
-            <Text style={[styles.modalTitle, { color: colors.text }]}>{t('placeholder.category')}</Text>
+          <View style={[styles.modalView, { backgroundColor: colors.background_primary, borderColor: colors.border }]}>
+            <Text style={[styles.modalTitle, { color: colors.text_primary }]}>{t('placeholder.category')}</Text>
             <ThemedInput
               placeholder={t('placeholder.category_create')}
               value={categoria}
@@ -544,7 +545,7 @@ export default function Input() {
                 filtrarCategorias(text);
               }}
               style={styles.modalSearchInput}
-              placeholderTextColor={colors.text}
+              placeholderTextColor={colors.text_primary}
             />
             <FlatList
               data={categoriasFiltradas.length > 0 ? categoriasFiltradas : categorias}
@@ -554,7 +555,7 @@ export default function Input() {
                   style={[
                     styles.modalItem,
                     {
-                      borderBottomColor: colors.borderColor,
+                      borderBottomColor: colors.border,
                       backgroundColor: item === categoria ? `${colors.info}20` : 'transparent'
                     }
                   ]}
@@ -563,12 +564,12 @@ export default function Input() {
                     setShowCategoriaModal(false);
                   }}
                 >
-                  <Text style={{ color: colors.text }}>{item}</Text>
+                  <Text style={{ color: colors.text_primary }}>{item}</Text>
                 </TouchableOpacity>
               )}
               style={styles.modalList}
             />
-            <View style={{ flexDirection: 'row' }}>
+            <View style={{ flexDirection: 'row', backgroundColor: colors.background_primary }}>
               <ButtonTT title={t('button.clean')} onPress={() => setCategoria('')} color={colors.info} />
               <ButtonTT title={t('button.create')} onPress={() => setShowCategoriaModal(false)} color={colors.success} />
             </View>
@@ -733,7 +734,7 @@ const styles = StyleSheet.create({
   },
   inlineButton: {
     height: '100%', // Faz o botão preencher exatamente a altura do input
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     borderRadius: 0,
     justifyContent: 'center',
     alignItems: 'center',

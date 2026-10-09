@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from 'expo-router';
+import Colors from '../../constants/Colors';
 import { useColorScheme } from '../../components/useColorScheme';
 
 interface ProductSelectorProps {
@@ -43,8 +44,9 @@ export default function ProductSelector({
   const inputRef = useRef<RNTextInput>(null);
 
   const colorScheme = useColorScheme() ?? 'light';
+  const colors = Colors[colorScheme];
 
-  const colors = {
+  const colors22 = {
     background: colorScheme === 'dark' ? '#000' : '#fff',
     inputBg: colorScheme === 'dark' ? '#1c1c1e' : '#f2f2f7',
     text: colorScheme === 'dark' ? '#fff' : '#000',
@@ -120,12 +122,12 @@ export default function ProductSelector({
   };
 
   return (
-    <View style={{ backgroundColor: 'transparent',alignItems: 'center' }}>
+    <View style={{ backgroundColor: 'transparent',alignItems: 'center', paddingTop: 10 }}>
       <Pressable
-        style={[styles.selectorButton, { backgroundColor: colors.inputBg }]}
+        style={[styles.selectorButton, { backgroundColor: colors.background_secondary }]}
         onPress={() => setModalVisible(true)}
       >
-        <Text style={[styles.selectorText, { color: colors.text }]}>
+        <Text style={[styles.selectorText, { color: colors.text_primary }]}>
           {selectedProduct || placeholderText}
         </Text>
       </Pressable>
@@ -137,17 +139,17 @@ export default function ProductSelector({
       >
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={{ flex: 1, backgroundColor: colors.background }}
+          style={{ flex: 1, backgroundColor: colors.background_primary }}
         >
-          <View style={[styles.modalContainer, { backgroundColor: colors.background }]}>
-            <Text style={[styles.modalTitle, { color: colors.text }]}>{titleText}</Text>
+          <View style={[styles.modalContainer, { backgroundColor: colors.background_primary }]}>
+            <Text style={[styles.modalTitle, { color: colors.text_primary }]}>{titleText}</Text>
 
             <FlatList
               data={filteredProducts}
               keyExtractor={(item) => item}
               keyboardShouldPersistTaps="always"
               renderItem={({ item }) => (
-                <View style={[styles.productItem, { borderBottomColor: colors.itemBorder }]}>
+                <View style={[styles.productItem, { borderBottomColor: colors.border, backgroundColor: colors.background_secondary }]}>
                   <TouchableOpacity
                     style={{ flex: 1 }}
                     onPress={() => {
@@ -156,20 +158,20 @@ export default function ProductSelector({
                     }}
                     onLongPress={() => removeProduct(item)}
                   >
-                    <Text style={[styles.productText, { color: colors.text }]}>{item}</Text>
+                    <Text style={[styles.productText, { color: colors.text_primary }]}>{item}</Text>
                   </TouchableOpacity>
 
                   <TouchableOpacity
                     onPress={() => removeProduct(item)}
                     style={styles.removeButtonContainer}
                   >
-                    <Text style={styles.removeButtonText}>✕</Text>
+                    <Text style={[styles.removeButtonText, { color: colors.danger }]}>✕</Text>
                   </TouchableOpacity>
                 </View>
               )}
             />
 
-            <Pressable onPress={closeModalAndClearSearch} style={styles.cancelButton}>
+            <Pressable onPress={closeModalAndClearSearch} style={[styles.cancelButton, { backgroundColor: colors.danger }]}>
               <Text style={styles.cancelText}>{closeText}</Text>
             </Pressable>
 
@@ -186,7 +188,7 @@ export default function ProductSelector({
                 placeholderTextColor="#888"
                 value={searchText}
                 onChangeText={setSearchText}
-                style={[styles.searchInput, { backgroundColor: colors.inputBg, color: colors.text }]}
+                style={[styles.searchInput, { backgroundColor: colors.background_secondary, color: colors.text_primary }]}
                 returnKeyType="done"
                 onSubmitEditing={() => {
                   if (searchText.length > 0 && !productExists) addNewProduct();
@@ -222,10 +224,9 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   removeButtonText: {
-    color: '#FF3B30',
     fontSize: 22,
     fontWeight: 'bold',
   },
-  cancelButton: { backgroundColor: '#FF3B30', padding: 15, borderRadius: 10, marginVertical: 5 },
+  cancelButton: { backgroundColor: 'orange', padding: 15, borderRadius: 10, marginVertical: 5 },
   cancelText: { color: 'white', textAlign: 'center', fontSize: 20, fontWeight: 'bold' },
 });

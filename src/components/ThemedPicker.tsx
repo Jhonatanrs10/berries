@@ -14,9 +14,9 @@ export function ThemedPicker(props: ThemedPickerProps) {
       style={[
         style,
         {
-          color: colors.text,
-          backgroundColor: colors.inputBackground,
-          borderColor: colors.borderColor,
+          color: colors.text_primary,
+          backgroundColor: colors.background_secondary,
+          borderColor: colors.border,
           borderWidth: 0,
           borderRadius: 0,
           padding: 0,

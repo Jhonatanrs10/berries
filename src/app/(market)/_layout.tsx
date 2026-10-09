@@ -14,15 +14,29 @@ export default function Layout() {
     <Tabs
       screenOptions={{
         headerShown: true, // Oculta o cabeçalho padrão, se desejar
-        tabBarActiveTintColor: colors.info, // Cor do ícone/texto da aba ativa
-        tabBarInactiveTintColor: colors.tabIconDefault, // Cor do ícone/texto da aba inativa
+        tabBarActiveTintColor: colors.button_selected, // Cor do ícone/texto da aba ativa
+        tabBarInactiveTintColor: colors.button_default, // Cor do ícone/texto da aba inativa
+        headerShadowVisible: true,
+        headerTitleStyle: {
+        color: colors.text_primary, // Garante a cor do título especificamente
+        fontWeight: 'bold',         // Exemplo: deixa em negrito
+        fontSize: 24,              // Tamanho da fonte
+        },
         tabBarStyle: {
-          paddingTop: 2,
-          backgroundColor: colors.background, // Cor de fundo da barra de abas
-          borderTopColor: colors.borderColor, // Cor da borda superior da barra de abas
+          borderTopWidth: 0,
+          backgroundColor: colors.background_tab, // Cor de fundo da barra de abas
+          borderTopColor: colors.border, // Cor da borda superior da barra de abas
+          //elevation: 0, // Garante remoção de sombra no Android
+          //shadowOpacity: 0, // Garante remoção de sombra no iOS
         },
         headerStyle: {
-          borderBottomWidth: 1, // Largura da borda inferior (fina)
+          borderBottomWidth: 0, // Largura da borda inferior (fina)
+          backgroundColor: colors.background_header,
+          borderBottomColor: colors.border,
+          //elevation: 0, // Remove elevação/sombra no Android
+          //shadowOpacity: 0, // Remove sombra no iOS
+          //shadowOffset: { width: 0, height: 0 }, // Zera o deslocamento da sombra (iOS)
+          //shadowRadius: 0, // Zera o desfoque da sombra (iOS)
         },
         // Adicione esta propriedade para ocultar o rótulo de texto
         tabBarShowLabel: false,

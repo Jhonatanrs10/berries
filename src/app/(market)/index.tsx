@@ -102,10 +102,10 @@ export default function MarketHistoryScreen() {
         style={[
           styles.transacaoContainer,
           {
-            backgroundColor: colors.inputBackground,
-            borderColor: colors.borderColor,
+            backgroundColor: colors.background_secondary,
+            borderColor: colors.border,
             borderWidth: 1,
-            shadowColor: colors.text,
+            shadowColor: colors.text_primary,
             shadowOffset: { width: 0, height: 2 },
             shadowOpacity: 0.1,
             shadowRadius: 4,
@@ -113,9 +113,9 @@ export default function MarketHistoryScreen() {
           }
         ]}
       >
-        <View style={[styles.transacaoHeader, { backgroundColor: colors.inputBackground }]}>
-          <View style={[styles.transacaoInfoPrincipal, { backgroundColor: colors.inputBackground }]}>
-            <Text style={[styles.transacaoDescricao, { color: colors.text }]}>
+        <View style={[styles.transacaoHeader, { backgroundColor: colors.background_secondary }]}>
+          <View style={[styles.transacaoInfoPrincipal, { backgroundColor: colors.background_secondary }]}>
+            <Text style={[styles.transacaoDescricao, { color: colors.text_primary }]}>
               {item.product}
             </Text>
           </View>
@@ -142,23 +142,23 @@ export default function MarketHistoryScreen() {
         <View
           style={[
             styles.transacaoDetalhes,
-            { borderTopColor: colors.borderColor, backgroundColor: colors.inputBackground }
+            { borderTopColor: colors.border, backgroundColor: colors.background_secondary }
           ]}
         >
-          <View style={[styles.detalheItem, { backgroundColor: colors.inputBackground }]}>
-            <Text style={[styles.detalheLabel, { color: colors.text }]}>
+          <View style={[styles.detalheItem, { backgroundColor: colors.background_secondary }]}>
+            <Text style={[styles.detalheLabel, { color: colors.text_primary }]}>
               {t('item_market.quantity')}:
             </Text>
-            <Text style={[styles.detalheValor, { color: colors.text }]}>
+            <Text style={[styles.detalheValor, { color: colors.text_primary }]}>
               {item.quantity}
             </Text>
           </View>
 
-          <View style={[styles.detalheItem, { backgroundColor: colors.inputBackground }]}>
-            <Text style={[styles.detalheLabel, { color: colors.text }]}>
+          <View style={[styles.detalheItem, { backgroundColor: colors.background_secondary }]}>
+            <Text style={[styles.detalheLabel, { color: colors.text_primary }]}>
               {t('item_market.value')}:
             </Text>
-            <Text style={[styles.detalheValor, { color: colors.text }]}>
+            <Text style={[styles.detalheValor, { color: colors.text_primary }]}>
               {item.unitValue.toLocaleString('pt-BR', {
                 style: 'currency',
                 currency: 'BRL',
@@ -170,19 +170,19 @@ export default function MarketHistoryScreen() {
         <View
           style={[
             styles.transacaoAcoes,
-            { borderTopColor: colors.borderColor, backgroundColor: colors.inputBackground }
+            { borderTopColor: colors.border, backgroundColor: colors.background_secondary }
           ]}
         >
           <ButtonTT
             title={t('button.edit') || "Editar"}
             onPress={() => editItem(item)}
-            color="info"
+            color="button_primary"
             buttonStyle={{ marginRight: 10 }}
           />
           <ButtonTT
             title="X"
             onPress={() => deleteItem(item)}
-            color="error"
+            color="danger"
           />
         </View>
       </View>
@@ -190,20 +190,20 @@ export default function MarketHistoryScreen() {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
+    <View style={[styles.container, { backgroundColor: colors.background_primary }]}>
       <View
         style={[
           styles.buscaContainer,
-          { borderColor: colors.tabIconDefault, backgroundColor: colors.inputBackground }
+          { borderColor: colors.tabIconDefault, backgroundColor: colors.background_secondary }
         ]}
       >
         <TextInput
           style={[
             styles.buscaInput,
             {
-              color: colors.text,
-              backgroundColor: colors.background,
-              borderColor: colors.borderColor,
+              color: colors.text_primary,
+              backgroundColor: colors.background_primary,
+              borderColor: colors.border,
             }
           ]}
           placeholder={t('placeholder.search_products')}

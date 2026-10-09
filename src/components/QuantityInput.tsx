@@ -22,7 +22,7 @@ export function QuantityInput({
 
     // Replicando o estilo do 'seasonGroup' do DynamicSeasonInput
     const seasonGroupStyle = {
-        backgroundColor: colors.inputBackground,
+        backgroundColor: colors.background_secondary,
     };
 
     return (
@@ -34,7 +34,7 @@ export function QuantityInput({
               
                 <TouchableOpacity
                     // Replicando styles.valueButton do DynamicSeasonInput
-                    style={[styles.valueButton, { backgroundColor: colors.primary }]}
+                    style={[styles.valueButton, { backgroundColor: colors.button_primary }]}
                     onPress={onDecrement}
                     onLongPress={onDecrement2}
                 >
@@ -47,9 +47,9 @@ export function QuantityInput({
                     style={[
                         styles.valueDisplay,
                         {
-                            borderColor: colors.borderColor,
-                            color: colors.text,
-                            backgroundColor: colors.inputBackground, // Mantém o fundo, embora o pai já o tenha
+                            borderColor: colors.border,
+                            color: colors.text_primary,
+                            backgroundColor: colors.background_secondary, // Mantém o fundo, embora o pai já o tenha
                         },
                     ]}
                 >
@@ -59,7 +59,7 @@ export function QuantityInput({
     
                 <TouchableOpacity
                     // Replicando styles.valueButton do DynamicSeasonInput
-                    style={[styles.valueButton, { backgroundColor: colors.primary }]}
+                    style={[styles.valueButton, { backgroundColor: colors.button_primary }]}
                     onPress={onIncrement}
                     onLongPress={onIncrement2}
                 >

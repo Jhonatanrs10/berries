@@ -29,7 +29,7 @@ const CalculatorButtons = ({
   const colors = Colors[colorScheme];
 
   return (
-    <View style={[styles.container,{backgroundColor: colors.background}]}>
+    <View style={[styles.container,{backgroundColor: colors.background_primary}]}>
       {Array.from({ length: 3 }).map((_, rowIndex) => (
         <View key={rowIndex} style={styles.row}>
           {numbers
@@ -37,10 +37,10 @@ const CalculatorButtons = ({
             .map((num) => (
               <Pressable
                 key={num}
-                style={[styles.button,{backgroundColor: colors.inputBackground}]}
+                style={[styles.button,{backgroundColor: colors.background_secondary}]}
                 onPress={() => onPressNumber(num)}
               >
-                <Text style={[styles.text,{color: colors.text}]}>{num}</Text>
+                <Text style={[styles.text,{color: colors.text_primary}]}>{num}</Text>
               </Pressable>
             ))}
         </View>
@@ -48,18 +48,18 @@ const CalculatorButtons = ({
 
       <View style={styles.row}>
         <Pressable
-          style={[styles.button, { flex: 1 ,backgroundColor: colors.inputBackground}]}
+          style={[styles.button, { flex: 1 ,backgroundColor: colors.background_secondary}]}
           onPress={() => onPressNumber('0')}
         >
-          <Text style={[styles.text,{color: colors.text}]}>0</Text>
+          <Text style={[styles.text,{color: colors.text_primary}]}>0</Text>
         </Pressable>
         <Pressable
-          style={[styles.button, styles.backspace, { flex: 1 }]}
+          style={[styles.button, styles.backspace, { flex: 1, backgroundColor: colors.danger }]}
           onPress={onBackspace} // apaga 1 caractere
           onLongPress={onStartBackspaceHold} // apaga tudo se segurar
           delayLongPress={400} // tempo de espera para considerar "segurar"
         >
-          <Text style={[styles.text,{color: colors.text}]}>⌫</Text>
+          <Text style={[styles.text,{color: colors.text_primary}]}>⌫</Text>
         </Pressable>
 
       </View>

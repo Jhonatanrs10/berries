@@ -55,5 +55,4 @@ Antes de começar, você precisará ter instalado em sua máquina:
 
 ## 🚀 Futuras Atualizações (Roadmap)
 
-- Melhorar os parametros de filtragem index(finance).
 - Melhorar UX input(market).
