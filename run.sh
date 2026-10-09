@@ -4,6 +4,7 @@
 # No terminal, para formatar um arquivo bash, você pode usar shfmt.
 # Exemplo de instalação no Arch Linux: sudo pacman -S shfmt
 # Exemplo de uso: shfmt -w seu_script.sh
+# TypeScript React FORMATTER 'Prettier'
 
 clear_screen() {
 	printf "\033[2J\033[H" # Limpa a tela e move o cursor para o topo
@@ -152,7 +153,7 @@ build_apk() {
 	echo ""
 	echo "Iniciando o build do APK (profile preview)..."
 	echo "Isso pode levar um tempo. Você receberá um link para baixar o APK ao final."
-	npx eas-cli@latest build -p android --profile preview
+	npx eas-cli@latest build -p android --profile preview --clear-cache
 
 	echo ""
 	echo "Lembrete: O arquivo eas.json deve estar na pasta raiz do seu projeto Expo."

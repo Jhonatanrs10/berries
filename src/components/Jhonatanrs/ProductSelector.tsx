@@ -122,9 +122,9 @@ export default function ProductSelector({
   };
 
   return (
-    <View style={{ backgroundColor: 'transparent',alignItems: 'center', paddingTop: 10 }}>
+    <View style={{ backgroundColor: 'transparent',alignItems: 'center', paddingTop: 10}}>
       <Pressable
-        style={[styles.selectorButton, { backgroundColor: colors.background_secondary }]}
+        style={[styles.selectorButton, { backgroundColor: colors.background_secondary, elevation: 1, }]}
         onPress={() => setModalVisible(true)}
       >
         <Text style={[styles.selectorText, { color: colors.text_primary }]}>

@@ -2,7 +2,7 @@
   "expo": {
     "name": "Berries",
     "slug": "berries",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./src/assets/images/icon.png",
     "scheme": "berries",
@@ -17,8 +17,7 @@
         "backgroundImage": "./src/assets/images/background.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": [
-      ],
+      "permissions": [],
       "package": "com.jhonatanrs10.berries"
     },
     "web": {
@@ -39,7 +38,7 @@
         {
           "image": "./src/assets/images/splash-icon.png",
           "imageWidth": 200,
-          "backgroundColor": "#ffc931"
+          "backgroundColor": "#f4bd25"
         }
       ],
       "expo-status-bar",
@@ -47,9 +46,11 @@
         "expo-build-properties",
         {
           "android": {
-            "abiFilters": [
+            "buildArchs": [
               "arm64-v8a"
-            ]
+            ],
+            "enableProguardInReleaseBuilds": true,
+            "enableShrinkResourcesInReleaseBuilds": true
           }
         }
       ]

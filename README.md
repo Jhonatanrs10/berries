@@ -55,4 +55,4 @@ Antes de começar, você precisará ter instalado em sua máquina:
 
 ## 🚀 Futuras Atualizações (Roadmap)
 
-- Melhorar UX input(market).
+- ...

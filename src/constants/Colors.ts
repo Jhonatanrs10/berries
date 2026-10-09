@@ -1,8 +1,8 @@
 const Colors = {
   dark: {
 
-    grade1: '#1e2029',
-    grade2: '#12131a',
+    grade1: '#373B44',
+    grade2: '#4286f4',
 
     background_primary: '#12131a',
     background_secondary: '#1e2029',
@@ -27,8 +27,8 @@ const Colors = {
   },
   light: {
 
-    grade1: '#fffdf5',
-    grade2: '#fcfcfc',
+    grade1: '#f2fcfe',
+    grade2: '#1c92d2',
 
     background_primary: '#fcfcfc',
     background_secondary: '#fffdf5',

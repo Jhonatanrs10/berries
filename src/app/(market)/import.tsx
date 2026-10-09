@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import React, { useState } from 'react';
-import { Pressable, StyleSheet, Alert, ScrollView } from 'react-native';
+import { Pressable, StyleSheet, Alert, Platform, ScrollView } from 'react-native';
 import { Text, View } from '../../components/Themed';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from 'expo-router';
@@ -10,6 +10,7 @@ import * as DocumentPicker from 'expo-document-picker';
 import * as Clipboard from 'expo-clipboard'; // <- Importe o expo-clipboard aqui
 import Colors from '../../constants/Colors';
 import { useColorScheme } from '../../components/useColorScheme';
+import ButtonTT from "../../components/Jhonatanrs/ButtonTT";
 
 type HistoryItem = {
   product: string;
@@ -127,7 +128,7 @@ export default function ProductsScreen() {
   };
 
   // Função auxiliar para gerar o texto formatado do histórico
-  const getFormattedHistoryContent = async (): Promise<string | null> => {
+ const getFormattedHistoryContent = async (): Promise<string | null> => {
     const stored = await AsyncStorage.getItem('history');
     const history: HistoryItem[] = stored ? JSON.parse(stored) : [];
 
@@ -136,20 +137,31 @@ export default function ProductsScreen() {
       return null;
     }
 
-    return history
-      .map((item) => {
-        const total = item.unitValue * item.quantity;
-        return `${item.product} ${item.quantity}x ${item.unitValue.toLocaleString('pt-BR', {
-          style: 'currency',
-          currency: 'BRL',
-        })} (${total.toLocaleString('pt-BR', {
-          style: 'currency',
-          currency: 'BRL',
-        })})`;
-      })
-      .join('\n');
+    let totalGeral = 0;
+
+    const linhas = history.map((item) => {
+      const totalItem = item.unitValue * item.quantity;
+      totalGeral += totalItem;
+
+      return `${item.product} ${item.quantity}x ${item.unitValue.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      })} (${totalItem.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      })})`;
+    });
+
+    const totalFormatado = totalGeral.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    });
+
+    // Junta as linhas dos produtos e adiciona o Total no final
+    return `${linhas.join('\n')}\n\nTotal: ${totalFormatado}`;
   };
 
+  
   const exportMarketHistory = async () => {
     try {
       const content = await getFormattedHistoryContent();
@@ -225,6 +237,7 @@ export default function ProductsScreen() {
         >
           <Text style={styles.buttonText}>{t('button.clear_database')}</Text>
         </Pressable>
+
       </View>
     </ScrollView>
   );
@@ -241,13 +254,29 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   footer: {
-    paddingBottom: 10,
+    paddingBottom: 0,
     backgroundColor: 'transparent',
   },
   button: {
-    padding: 12,
-    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    marginHorizontal:5,
+    borderRadius: 8, // Ajustado para ser um pouco mais arredondado
     alignItems: 'center',
+    justifyContent: 'center',
+    minWidth: 50,
+    // Sombras / Elevação (simulando botão padrão)
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+      },
+      android: {
+        elevation: 4,
+      },
+    }),
   },
   halfButton: {
     flex: 1,
