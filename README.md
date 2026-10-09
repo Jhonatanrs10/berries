@@ -55,4 +55,4 @@ Antes de começar, você precisará ter instalado em sua máquina:
 
 ## 🚀 Futuras Atualizações (Roadmap)
 
-- ...
+- Usar % no tamanho da logo na splash screen.
