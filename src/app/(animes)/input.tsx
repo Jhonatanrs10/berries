@@ -445,7 +445,8 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 16,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    borderRadius: 8
   },
   buttonContainer: {
     flexDirection: 'row',

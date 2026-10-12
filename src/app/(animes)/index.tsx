@@ -465,8 +465,8 @@ const styles = StyleSheet.create({
   },
   dayFilterContainer: {
     marginHorizontal: 0,
-    marginTop: 10,
-    marginBottom: 10,
+    marginVertical: 0,
+    paddingVertical: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -492,7 +492,7 @@ const styles = StyleSheet.create({
   },
   flatListContentContainer: { // Estilo para o conteúdo dentro da FlatList
     padding: 20,
-    paddingTop: 15,
+    paddingTop: 1,
   },
   animeContainer: {
     borderRadius: 12,

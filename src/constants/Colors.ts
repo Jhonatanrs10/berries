@@ -31,9 +31,9 @@ const Colors = {
     grade2: '#1c92d2',
 
     background_primary: '#fcfcfc',
-    background_secondary: '#fffdf5',
-    background_tab: '#fffdf5',
-    background_header: '#fffdf5',
+    background_secondary: '#fffbeb',
+    background_tab: '#fffbeb',
+    background_header: '#fffbeb',
 
     button_primary: '#f4bd25',       
     button_secondary: '#251455',

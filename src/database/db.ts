@@ -24,7 +24,8 @@ async function verificarTabela() {
     return {
       transacoes: resultado.some(r => r.name === 'transacoes'),
       produtos: resultado.some(r => r.name === 'produtos'),
-      animes: resultado.some(r => r.name === 'animes') // Adicionado para animes
+      animes: resultado.some(r => r.name === 'animes'),
+      tarefas: resultado.some(r => r.name === 'tarefas')
     };
   } catch (error) {
     console.error('Erro ao verificar tabela:', error);
@@ -82,6 +83,21 @@ async function inicializarBanco() {
         );
       `);
       console.log('Tabela animes criada com sucesso');
+    }
+
+    if (!tabelas.tarefas) {
+      await database.execAsync(`
+        CREATE TABLE IF NOT EXISTS tarefas (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          titulo TEXT NOT NULL,
+          descricao TEXT,
+          categoria TEXT,
+          tempoMinutos INTEGER DEFAULT 0,
+          concluida INTEGER DEFAULT 0,
+          data TEXT NOT NULL
+        );
+      `);
+      console.log('Tabela tarefas criada com sucesso');
     }
 
   } catch (error) {
@@ -401,6 +417,136 @@ export async function recriarTabelaAnimes() {
     return true;
   } catch (error) {
     console.error('Erro ao recriar tabela animes:', error);
+    return false;
+  }
+}
+
+export interface Tarefa {
+  id: number;
+  titulo: string;
+  descricao: string;
+  categoria: string;
+  tempoMinutos: number;
+  concluida: boolean; // No SQLite guardamos como 0 (falso) ou 1 (verdadeiro)
+  data: string;
+}
+
+export async function salvarTarefa(tarefa: Omit<Tarefa, 'id'>) {
+  return new Promise((resolve, reject) => {
+    const database = getDatabase();
+    database.runAsync(
+      `INSERT INTO tarefas (titulo, descricao, categoria, tempoMinutos, concluida, data)
+       VALUES (?, ?, ?, ?, ?, ?);`,
+      [
+        tarefa.titulo,
+        tarefa.descricao,
+        tarefa.categoria,
+        tarefa.tempoMinutos,
+        tarefa.concluida ? 1 : 0,
+        tarefa.data
+      ]
+    ).then((result: SQLite.SQLiteRunResult) => resolve(result.lastInsertRowId))
+    .catch((error: Error) => {
+      console.error('Erro ao salvar tarefa:', error);
+      reject(error);
+    });
+  });
+}
+
+export async function buscarTarefas(): Promise<Tarefa[]> {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const database = getDatabase();
+      const tabelas = await verificarTabela();
+      if (!tabelas.tarefas) {
+        await inicializarBanco();
+      }
+
+      const resultado = await database.getAllAsync('SELECT * FROM tarefas ORDER BY id DESC;') as any[];
+      
+      // Converte o campo "concluida" de número (0 ou 1) para booleano (true ou false)
+      const tarefasFormatadas: Tarefa[] = resultado.map(item => ({
+        ...item,
+        concluida: item.concluida === 1
+      }));
+
+      resolve(tarefasFormatadas);
+    } catch (error) {
+      console.error('Erro ao buscar tarefas:', error);
+      reject(error);
+    }
+  });
+}
+
+export async function atualizarTarefa(tarefa: Tarefa) {
+  return new Promise((resolve, reject) => {
+    const database = getDatabase();
+    database.runAsync(
+      `UPDATE tarefas
+       SET titulo = ?, descricao = ?, categoria = ?, tempoMinutos = ?, concluida = ?, data = ?
+       WHERE id = ?;`,
+      [
+        tarefa.titulo,
+        tarefa.descricao,
+        tarefa.categoria,
+        tarefa.tempoMinutos,
+        tarefa.concluida ? 1 : 0,
+        tarefa.data,
+        tarefa.id
+      ]
+    ).then((result: SQLite.SQLiteRunResult) => resolve(result.changes))
+    .catch((error: Error) => {
+      console.error('Erro ao atualizar tarefa:', error);
+      reject(error);
+    });
+  });
+}
+
+export async function alternarStatusTarefa(id: number) {
+  return new Promise((resolve, reject) => {
+    const database = getDatabase();
+    database.runAsync(
+      `UPDATE tarefas SET concluida = CASE WHEN concluida = 1 THEN 0 ELSE 1 END WHERE id = ?;`,
+      [id]
+    ).then((result: SQLite.SQLiteRunResult) => resolve(result.changes))
+    .catch((error: Error) => {
+      console.error('Erro ao alternar status da tarefa:', error);
+      reject(error);
+    });
+  });
+}
+
+export async function deletarTarefa(id: number) {
+  return new Promise((resolve, reject) => {
+    const database = getDatabase();
+    database.runAsync('DELETE FROM tarefas WHERE id = ?;', [id])
+    .then((result: SQLite.SQLiteRunResult) => resolve(result.changes))
+    .catch((error: Error) => {
+      console.error('Erro ao deletar tarefa:', error);
+      reject(error);
+    });
+  });
+}
+
+export async function recriarTabelaTarefas() {
+  try {
+    const database = getDatabase();
+    await database.execAsync('DROP TABLE IF EXISTS tarefas;');
+    await database.execAsync(`
+      CREATE TABLE tarefas (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        titulo TEXT NOT NULL,
+        descricao TEXT,
+        categoria TEXT,
+        tempoMinutos INTEGER DEFAULT 0,
+        concluida INTEGER DEFAULT 0,
+        data TEXT NOT NULL
+      );
+    `);
+    console.log('Tabela tarefas recriada com sucesso');
+    return true;
+  } catch (error) {
+    console.error('Erro ao recriar tabela tarefas:', error);
     return false;
   }
 }

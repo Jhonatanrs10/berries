@@ -60,6 +60,7 @@ function RootLayoutNav() {
         <Stack.Screen name="(animes)" options={{ headerShown: false }} />
         <Stack.Screen name="(finance)" options={{ headerShown: false }} />
         <Stack.Screen name="(market)" options={{ headerShown: false }} />
+         <Stack.Screen name="(todo)" options={{ headerShown: false }} />
       </Stack>
     </ThemeProvider>
   );

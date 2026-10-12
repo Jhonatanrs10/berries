@@ -56,3 +56,6 @@ Antes de começar, você precisará ter instalado em sua máquina:
 ## 🚀 Futuras Atualizações (Roadmap)
 
 - Usar % no tamanho da logo na splash screen.
+- Quarto app de To Do com tempo da atividade e tempo total para a conclusão de todas
+- Melhorar o amarelo do modo light (talvez colocar borda dos inputs?)
+- Testar UX uma tira nos dias da semana dos animes com a cor da borda do search
