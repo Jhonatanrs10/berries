@@ -1,5 +1,4 @@
-import packageJson from './package.json';
-
+import packageJson from './package.json' with { type: 'json' };
 export default {
   expo: {
     name: "Berries",

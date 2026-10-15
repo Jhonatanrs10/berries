@@ -174,7 +174,7 @@ export default function TodoSummary() {
             value={endDate || new Date()}
             mode="date"
             display="default"
-            onChange={(e, d) => {
+            onValueChange={(e, d) => {
               setShowDatePickerEnd(Platform.OS === 'ios');
               setEndDate(d || undefined);
             }}

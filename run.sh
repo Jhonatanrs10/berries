@@ -33,6 +33,10 @@ update_sdk() {
 	npx expo start -c
 }
 
+install_expo(){
+	npm install expo
+}
+
 local_build_req() {
 	echo ""
 	echo "Instalando dependências nativas para Arch Linux..."
@@ -146,10 +150,11 @@ show_menu() {
 	echo "5.  Checar Compatibilidade (expo install --check)"
 	echo "6.  Atualizar package-lock.json (npm install)"
 	echo "7.  Atualizar Expo SDK"
+	echo "8.  Install Expo (Setup)"
 	echo "-------------------------------------"
-	echo "8.  Instalar Requisitos do Android Studio (Arch)"
-	echo "9.  Buildar APK em Nuvem (EAS Build)"
-	echo "10. Buildar APK Localmente (EAS Local)"
+	echo "9.  Instalar Requisitos do Android Studio (Arch)"
+	echo "10. Buildar APK em Nuvem (EAS Build)"
+	echo "11. Buildar APK Localmente (EAS Local)"
 	echo "-------------------------------------"
 	echo "0. Sair"
 	echo "-------------------------------------"
@@ -167,9 +172,10 @@ while true; do
 	5) npxcheckversions ;;
 	6) update_package_lock ;;
 	7) update_sdk ;;
-	8) local_build_req ;;
-	9) build_apk ;;
-	10) build_apk_local ;;
+	8) install_expo ;;
+	9) local_build_req ;;
+	10) build_apk ;;
+	11) build_apk_local ;;
 	0)
 		echo ""
 		echo "Saindo. Até mais!"
