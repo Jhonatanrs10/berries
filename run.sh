@@ -29,11 +29,12 @@ update_sdk() {
 	npx expo install expo@latest -- --legacy-peer-deps
 	npx expo install --fix
 	npx expo config
-	npx expo doctor
+	npx expo-doctor
 	npx expo start -c
 }
 
-install_expo(){
+install_expo() {
+	sudo pacman -S nodejs-lts-iron npm --needed
 	npm install expo
 }
 
@@ -125,7 +126,7 @@ build_apk_local() {
 run_expo_doctor() {
 	echo ""
 	echo "Rodando diagnóstico de saúde do projeto..."
-	npx expo doctor
+	npx expo-doctor
 	echo ""
 	echo -n "Pressione ENTER para continuar..."
 	read -r
@@ -137,6 +138,37 @@ open_vscode() {
 	code . &
 }
 
+git_pull() {
+	echo ""
+	echo "🔄 Puxando atualizações do repositório remoto (git pull)..."
+	git pull
+	echo ""
+	echo -n "Pressione ENTER para continuar..."
+	read -r
+}
+
+git_push() {
+	echo ""
+	echo "🚀 Enviando alterações para o repositório (git push)..."
+	
+	git status
+	echo ""
+	echo -n "Digite a mensagem do commit: "
+	read -r commit_msg
+
+	if [ -z "$commit_msg" ]; then
+		commit_msg="att"
+	fi
+
+	git add .
+	git commit -m "$commit_msg"
+	git push
+
+	echo ""
+	echo -n "Pressione ENTER para continuar..."
+	read -r
+}
+
 show_menu() {
 	clear_screen
 	echo "-------------------------------------"
@@ -145,47 +177,56 @@ show_menu() {
 	echo "1.  Rodar o Projeto (npx expo start)"
 	echo "2.  Abrir Pasta no VS Code (code .)"
 	echo "-------------------------------------"
-	echo "3.  Corrigir Dependências (expo install --fix)"
-	echo "4.  Verificar Saúde do Projeto (expo doctor)"
-	echo "5.  Checar Compatibilidade (expo install --check)"
-	echo "6.  Atualizar package-lock.json (npm install)"
-	echo "7.  Atualizar Expo SDK"
-	echo "8.  Install Expo (Setup)"
+	echo "3.  Expo Setup (npm install expo)"
+	echo "4.  Corrigir Dependências (npx expo install --fix)"
+	echo "5.  Verificar Saúde do Projeto (npx expo-doctor)"
+	echo "6.  Checar Compatibilidade (npx expo install --check)"
+	echo "7.  Atualizar package-lock.json (npm install)"
+	echo "8.  Atualizar Expo SDK"
 	echo "-------------------------------------"
 	echo "9.  Instalar Requisitos do Android Studio (Arch)"
 	echo "10. Buildar APK em Nuvem (EAS Build)"
 	echo "11. Buildar APK Localmente (EAS Local)"
+	echo "-------------------------------------"
+	echo "12. Git Pull"
+	echo "13. Git Push"
 	echo "-------------------------------------"
 	echo "0. Sair"
 	echo "-------------------------------------"
 	echo -n "Escolha uma opção: "
 }
 
-while true; do
-	show_menu
-	read -r choice
-	case "$choice" in
-	1) run_project ;;
-	2) open_vscode ;;
-	3) install_dependencies ;;
-	4) run_expo_doctor ;;
-	5) npxcheckversions ;;
-	6) update_package_lock ;;
-	7) update_sdk ;;
-	8) install_expo ;;
-	9) local_build_req ;;
-	10) build_apk ;;
-	11) build_apk_local ;;
-	0)
-		echo ""
-		echo "Saindo. Até mais!"
-		exit 0
-		;;
-	*)
-		echo ""
-		echo "Opção inválida."
-		echo -n "Pressione ENTER para continuar..."
-		read -r
-		;;
-	esac
-done
+expo_menu() {
+	while true; do
+		show_menu
+		read -r choice
+		case "$choice" in
+		1) run_project ;;
+		2) open_vscode ;;
+		3) install_expo ;;
+		4) install_dependencies ;;
+		5) run_expo_doctor ;;
+		6) npxcheckversions ;;
+		7) update_package_lock ;;
+		8) update_sdk ;;
+		9) local_build_req ;;
+		10) build_apk ;;
+		11) build_apk_local ;;
+		12) git_pull ;;
+		13) git_push ;;
+		0)
+			echo ""
+			echo "Saindo. Até mais!"
+			exit 0
+			;;
+		*)
+			echo ""
+			echo "Opção inválida."
+			echo -n "Pressione ENTER para continuar..."
+			read -r
+			;;
+		esac
+	done
+}
+
+expo_menu
