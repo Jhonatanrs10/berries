@@ -214,7 +214,7 @@ export default function TodoInput() {
               value={selectedDateObject}
               mode="date"
               display="default"
-              onChange={onDateChange}
+              onValueChange={onDateChange}
             />
           )}
         </View>

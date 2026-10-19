@@ -378,7 +378,7 @@ export default function MeusAnimes() {
       </View>
 
       {!busca && (
-        <View style={[styles.dayFilterContainer, { backgroundColor: colors.background_primary }]}>
+        <View style={[styles.dayFilterContainer, { backgroundColor: 'transparent' }]}>
           <FlatList // Usando FlatList para os botões de filtro de dia horizontalmente
             horizontal
             showsHorizontalScrollIndicator={false}

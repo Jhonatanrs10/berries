@@ -37,7 +37,7 @@ export default function RootLayout() {
       // Força a Splash Screen a ficar visível por 5 segundos para testes
       const timer = setTimeout(() => {
         SplashScreen.hideAsync();
-      }, 1500);
+      }, 1000);
 
       return () => clearTimeout(timer);
     }

@@ -124,6 +124,11 @@ export default function TodoList() {
           backgroundColor: colors.background_secondary,
           borderColor: item.concluida ? colors.success : colors.border,
           borderWidth: 1,
+          shadowColor: colors.text_primary,
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.1,
+          shadowRadius: 4,
+          elevation: 3,
           opacity: item.concluida ? 0.75 : 1,
         }
       ]}
