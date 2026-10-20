@@ -97,7 +97,7 @@ async function inicializarBanco() {
           data TEXT NOT NULL
         );
       `);
-      console.log('Tabela tarefas criada com sucesso');
+      //console.log('Tabela tarefas criada com sucesso');
     }
 
   } catch (error) {

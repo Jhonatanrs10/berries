@@ -214,8 +214,8 @@ export default function ProductsScreen() {
 
         <View style={styles.rowButtons}>
           <Pressable
-            onPress={exportMarketHistory}
-            onLongPress={copyMarketHistoryToClipboard} // <- Adicionado o evento de toque longo aqui
+            onLongPress={exportMarketHistory}
+            onPress={copyMarketHistoryToClipboard} // <- Adicionado o evento de toque longo aqui
             style={[styles.button, styles.halfButton, { backgroundColor: colors.success }]}
           >
             <Text style={styles.buttonText}>{t('return.export_history')}</Text>
@@ -231,13 +231,11 @@ export default function ProductsScreen() {
       </View>
 
       <View style={styles.footer}>
-        <Pressable
+      <ButtonTT
+          title={t("button.clear_database")}
           onLongPress={clearProducts}
-          style={[styles.button, { backgroundColor: colors.danger || '#FF3B30' }]}
-        >
-          <Text style={styles.buttonText}>{t('button.clear_database')}</Text>
-        </Pressable>
-
+          color={colors.danger}
+        />
       </View>
     </ScrollView>
   );

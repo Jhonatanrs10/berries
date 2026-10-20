@@ -1,4 +1,5 @@
 import packageJson from './package.json' with { type: 'json' };
+
 export default {
   expo: {
     name: "Berries",
@@ -38,11 +39,21 @@ export default {
         "expo-splash-screen",
         {
           "image": "./src/assets/images/splash-icon.png",
-          "imageWidth": 260,
-          "backgroundColor": "#f4bd25"
+          "imageWidth": 150,
+          "resizeMode": "contain",
+          "backgroundColor": "#f4bd25",
+          "dark": {
+            "backgroundColor": "#f4bd25"
+          }
         }
       ],
       "expo-status-bar",
+      [
+        "expo-navigation-bar",
+        {
+          "enforceContrast": false
+        }
+      ],
       [
         "expo-build-properties",
         {
@@ -65,7 +76,7 @@ export default {
         projectId: "e7a6c459-7f54-43e8-9f60-5cccba4ce809"
       }
     },
-    runtimeVersion: "1.0.2",
+    runtimeVersion: "1.0.4",
     updates: {
       url: "https://u.expo.dev/e7a6c459-7f54-43e8-9f60-5cccba4ce809"
     },

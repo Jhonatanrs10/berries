@@ -3,46 +3,63 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
+import { Platform } from 'react-native';
+import * as NavigationBar from 'expo-navigation-bar';
+import * as SplashScreen from 'expo-splash-screen';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '../components/useColorScheme';
 
 export {
-  // Catch any errors thrown by the Layout component.
   ErrorBoundary,
 } from 'expo-router';
 
 export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
   initialRouteName: 'index',
 };
 
-// Impede que a splash screen seja ocultada automaticamente
+// 1. Impede que o splash nativo suma sozinho antes do app carregar
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  const colorScheme = useColorScheme();
+  
   const [loaded, error] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     ...FontAwesome.font,
   });
 
+  // Configurar a Navigation Bar para Android de forma transparente
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      async function setTransparentNavBar() {
+        try {
+          await NavigationBar.setBackgroundColorAsync('transparent');
+          await NavigationBar.setButtonStyleAsync(colorScheme === 'dark' ? 'light' : 'dark');
+          await NavigationBar.setBehaviorAsync('inset-swipe');
+        } catch (e) {
+          console.log('Erro ao configurar navigation bar:', e);
+        }
+      }
+      setTransparentNavBar();
+    }
+  }, [colorScheme]);
+
   useEffect(() => {
     if (error) throw error;
   }, [error]);
 
+  // 2. Assim que as fontes carregarem, escondemos o splash nativo com elegância
   useEffect(() => {
     if (loaded) {
-      // Força a Splash Screen a ficar visível por 5 segundos para testes
-      const timer = setTimeout(() => {
-        SplashScreen.hideAsync();
-      }, 1000);
-
-      return () => clearTimeout(timer);
+      SplashScreen.hideAsync().catch(() => {
+        // Ignora caso já tenha sido oculto
+      });
     }
   }, [loaded]);
 
+  // Se as fontes não carregaram, retornamos null para o nativo continuar segurando a tela
   if (!loaded) {
     return null;
   }
@@ -60,7 +77,7 @@ function RootLayoutNav() {
         <Stack.Screen name="(animes)" options={{ headerShown: false }} />
         <Stack.Screen name="(finance)" options={{ headerShown: false }} />
         <Stack.Screen name="(market)" options={{ headerShown: false }} />
-         <Stack.Screen name="(todo)" options={{ headerShown: false }} />
+        <Stack.Screen name="(todo)" options={{ headerShown: false }} />
       </Stack>
     </ThemeProvider>
   );

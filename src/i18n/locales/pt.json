@@ -4,6 +4,7 @@
   "animes": "Animes",
   "finance": "Finanças",
   "market": "Mercado",
+  "todo": "Tarefas",
   "copyright": "Todos os direitos reservados",
   "status": {
     "watching": "Assistindo",
@@ -150,7 +151,11 @@
     "clear_history": "Limpar Histórico",
     "clear_history_msg": "Deseja excluir todos os itens da lista?",
     "warning_clean_database": "Deseja apagar os dados do banco de dados?",
-    "clipboard": "Copiado para a área de transferência!"
+    "clipboard": "Copiado para a área de transferência!",
+    "load_error": "Não foi possível carregar as tarefas.",
+    "save_error": "Não foi possível salvar a tarefa.",
+    "confirm_delete_desc": "Deseja realmente excluir esta tarefa?",
+    "inform_title": "Informe pelo menos o título da tarefa."
   },
   "stats": {
     "total_animes": "Total de Animes",
@@ -211,7 +216,10 @@
     "wallet_create": "Pesquisar/Criar carteira...",
     "category": "Crie ou selecione uma categoria",
     "category_create": "Pesquisar/Criar categoria...",
-    "product_name": "Digite o nome do produto..."
+    "product_name": "Digite o nome do produto...",
+    "search_tasks": "Buscar por tarefas...",
+    "task_title": "Ex: Estudar React Native",
+    "task_desc": "Ex: Ler capítulo 3 da documentação"
   },
   "action": {
     "inflow": "Entrada",
@@ -269,5 +277,26 @@
       "linkSaved": "Link salvo!",
       "saveError": "Não foi possível salvar o link."
     }
+  },
+  "badge": {
+    "today": "Hoje"
+  },
+  "category": {
+    "general": "Geral"
+  },
+  "task": {
+    "tasks": "Tarefas",
+    "summary": "Resumo",
+    "new_task": "Nova Tarefa",
+    "edit_task": "Editar Tarefa",
+    "title": "Título da Tarefa",
+    "description": "Descrição / Observações",
+    "time_estimated": "Tempo estimado/gasto (minutos)"
+  },
+  "summary": {
+    "total_time": "Tempo Total",
+    "realized_workload": "Carga horária realizada",
+    "remaining_workload": "Carga horária restante",
+    "completed_tasks": "Tarefas concluídas"
   }
 }

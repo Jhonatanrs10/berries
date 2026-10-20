@@ -42,6 +42,7 @@ export default function TodoInput() {
     return `${dia}/${mes}/${ano}`;
   }, []);
 
+  // Limpa apenas os campos do formulário, preservando o ID para continuar na edição se estiver editando
   const limparFormulario = useCallback(() => {
     setTitulo('');
     setDescricao('');
@@ -50,8 +51,13 @@ export default function TodoInput() {
     const hoje = new Date();
     setData(getTodayDate());
     setSelectedDateObject(hoje);
+  }, [getTodayDate]);
+
+  // Limpeza total usada ao sair ou cancelar a edição
+  const resetarCompleto = useCallback(() => {
+    limparFormulario();
     router.setParams({ id: undefined });
-  }, [router, getTodayDate]);
+  }, [limparFormulario, router]);
 
   useFocusEffect(
     useCallback(() => {
@@ -86,7 +92,7 @@ export default function TodoInput() {
   async function salvar() {
     try {
       if (!titulo.trim()) {
-        Alert.alert(t('return.error'), 'Informe pelo menos o título da tarefa.');
+        Alert.alert(t('return.error'), t('return.inform_title') || 'Informe pelo menos o título da tarefa.');
         return;
       }
 
@@ -100,7 +106,7 @@ export default function TodoInput() {
       const tarefaData = {
         titulo: titulo.trim(),
         descricao: descricao.trim(),
-        categoria: categoria.trim() || 'Geral',
+        categoria: categoria.trim() || t("category.general") || 'Geral',
         tempoMinutos: duracao,
         concluida: false,
         data,
@@ -116,11 +122,11 @@ export default function TodoInput() {
         await salvarTarefa(tarefaData);
       }
 
-      limparFormulario();
+      resetarCompleto();
       router.replace('/');
     } catch (error) {
       console.error('Erro ao salvar tarefa:', error);
-      Alert.alert(t('return.error'), 'Não foi possível salvar a tarefa.');
+      Alert.alert(t('return.error'), t('return.save_error') || 'Não foi possível salvar a tarefa.');
     }
   }
 
@@ -131,7 +137,7 @@ export default function TodoInput() {
     >
       <Stack.Screen
         options={{
-          headerTitle: params.id ? `Editar Tarefa #${params.id}` : 'Nova Tarefa',
+          headerTitle: params.id ? `${t('task.edit_task') || 'Editar Tarefa'} #${params.id}` : (t('task.new_task') || 'Nova Tarefa'),
         }}
       />
 
@@ -142,39 +148,37 @@ export default function TodoInput() {
         keyboardShouldPersistTaps="handled"
       >
         <View style={styles.inputContainer}>
-          <Text style={[styles.label, { color: colors.text_primary }]}>Título da Tarefa *</Text>
+          <Text style={[styles.label, { color: colors.text_primary }]}>{t('task.title') || 'Título da Tarefa'} *</Text>
           <ThemedInput
             value={titulo}
             onChangeText={setTitulo}
-            placeholder="Ex: Estudar React Native"
+            placeholder={t('placeholder.task_title') || 'Ex: Estudar React Native'}
             placeholderTextColor={colors.text_primary}
           />
         </View>
 
         <View style={styles.inputContainer}>
-          <Text style={[styles.label, { color: colors.text_primary }]}>Descrição / Observações</Text>
+          <Text style={[styles.label, { color: colors.text_primary }]}>{t('task.description') || 'Descrição / Observações'}</Text>
           <ThemedInput
             value={descricao}
             onChangeText={setDescricao}
-            placeholder="Ex: Ler capítulo 3 da documentação"
+            placeholder={t('placeholder.task_desc') || 'Ex: Ler capítulo 3 da documentação'}
             placeholderTextColor={colors.text_primary}
-            multiline
-            style={{ minHeight: 80 }}
           />
         </View>
 
         <View style={styles.inputContainer}>
-          <Text style={[styles.label, { color: colors.text_primary }]}>Categoria</Text>
+          <Text style={[styles.label, { color: colors.text_primary }]}>{t('input_finance.category') || 'Categoria'}</Text>
           <ThemedInput
             value={categoria}
             onChangeText={setCategoria}
-            placeholder="Ex: Estudos, Trabalho, Pessoal"
+            placeholder={t('placeholder.category') || 'Ex: Estudos, Trabalho, Pessoal'}
             placeholderTextColor={colors.text_primary}
           />
         </View>
 
         <View style={styles.inputContainer}>
-          <Text style={[styles.label, { color: colors.text_primary }]}>Tempo estimado/gasto (minutos)</Text>
+          <Text style={[styles.label, { color: colors.text_primary }]}>{t('task.time_estimated') || 'Tempo estimado/gasto (minutos)'}</Text>
           <ThemedInput
             value={tempoMinutos}
             onChangeText={setTempoMinutos}
@@ -227,7 +231,7 @@ export default function TodoInput() {
           <ButtonTT
             title={t('button.cancel_edit')}
             onPress={() => {
-              limparFormulario();
+              resetarCompleto();
               router.replace('/');
             }}
             color={colors.danger}
@@ -257,9 +261,21 @@ const styles = StyleSheet.create({
   label: { fontSize: 16, fontWeight: 'bold', marginBottom: 5 },
   buttonContainer: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 },
   combinedDateContainer: {
-    flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderRadius: 8, overflow: 'hidden', height: 55,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 0,
+    borderRadius: 0,
+    overflow: 'hidden',
+    height: 60,
   },
   dateInputButtonFlex: { flex: 1, paddingHorizontal: 15, justifyContent: 'center' },
   dateInputText: { fontSize: 16 },
-  inlineButton: { height: '100%', paddingHorizontal: 15, justifyContent: 'center', alignItems: 'center' },
+  inlineButton: {
+    height: '100%',
+    paddingHorizontal: 10,
+    borderRadius: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 0,
+  },
 });

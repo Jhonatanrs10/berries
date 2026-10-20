@@ -4,6 +4,7 @@
   "animes": "Animes",
   "finance": "Finance",
   "market": "Market",
+  "todo": "To Do",
   "copyright": "All rights reserved",
   "status": {
     "watching": "Watching",
@@ -150,7 +151,11 @@
     "clear_history": "Clear History",
     "clear_history_msg": "Do you want to delete all items from the list?",
     "warning_clean_database": "Do you want to delete the data from the database?",
-    "clipboard": "Copied to the clipboard!"
+    "clipboard": "Copied to the clipboard!",
+    "load_error": "Could not load tasks.",
+    "save_error": "Could not save task.",
+    "confirm_delete_desc": "Do you really want to delete this task?",
+    "inform_title": "Please provide at least the task title."
   },
   "stats": {
     "total_animes": "Total Animes",
@@ -211,7 +216,10 @@
     "wallet_create": "Search/Create wallet...",
     "category": "Create or select a Category",
     "category_create": "Search/Create category...",
-    "product_name": "Type the product name..."
+    "product_name": "Type the product name...",
+    "search_tasks": "Search for tasks...",
+    "task_title": "Ex: Study React Native",
+    "task_desc": "Ex: Read chapter 3 of documentation"
   },
   "action": {
     "inflow": "In",
@@ -269,5 +277,26 @@
       "linkSaved": "Link saved!",
       "saveError": "Could not save the link."
     }
+  },
+  "badge": {
+    "today": "Today"
+  },
+  "category": {
+    "general": "General"
+  },
+  "task": {
+    "tasks": "Tasks",
+    "summary": "Summary",
+    "new_task": "New Task",
+    "edit_task": "Edit Task",
+    "title": "Task Title",
+    "description": "Description / Notes",
+    "time_estimated": "Estimated/spent time (minutes)"
+  },
+  "summary": {
+    "total_time": "Total Time",
+    "realized_workload": "Realized workload",
+    "remaining_workload": "Remaining workload",
+    "completed_tasks": "Completed tasks"
   }
 }

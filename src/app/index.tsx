@@ -61,7 +61,7 @@ export default function HomeScreen() {
         <View style={styles.spacer} />
         <ButtonTTAPP
           imageSource={require("../assets/images/BTTAPP04.png")}
-          title={"To Do"}
+          title={t("todo")}
           onPress={() => router.push("/(todo)")}
         />
         <View style={styles.spacer} />
