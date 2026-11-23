@@ -446,7 +446,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 8
+    borderRadius: 0
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -488,7 +488,7 @@ const styles = StyleSheet.create({
   detailValue: { fontSize: 14, fontWeight: 'bold', },
   linkButtonContainer: { flexDirection: 'row', alignItems: 'center', flexShrink: 1, },
   linkText: { textDecorationLine: 'underline', marginRight: 8, },
-  linkOpenButton: { padding: 6, borderRadius: 5, justifyContent: 'center', alignItems: 'center', },
+  linkOpenButton: { padding: 6, borderRadius: 0, justifyContent: 'center', alignItems: 'center', },
   animeActions: { flexDirection: 'row', justifyContent: 'flex-end', padding: 15, borderTopWidth: 1, },
   noAnimesText: { textAlign: 'center', marginTop: 20, fontSize: 16, },
 });

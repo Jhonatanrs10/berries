@@ -82,8 +82,10 @@ export default function HomeScreen() {
           </Text>
         </View>
       </ScrollView>
-
-      <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
+      <StatusBar
+        style={colorScheme === "dark" ? "light" : "dark"}
+        animated={false}
+      />
     </View>
   );
 }

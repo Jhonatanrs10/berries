@@ -29,6 +29,40 @@ export interface Tarefa {
   data: string; // 'DD/MM/AAAA'
 }
 
+const DIAS_PARA_EXCLUIR = 3;
+
+function parseDataBR(dataStr: string): Date | null {
+  const partes = dataStr.split("/").map(Number);
+  if (partes.length !== 3) return null;
+  const [dia, mes, ano] = partes;
+  if (!dia || !mes || !ano) return null;
+  // Usa meio-dia local para evitar desvios de fuso horário / DST
+  return new Date(ano, mes - 1, dia, 12, 0, 0, 0);
+}
+
+function calcularDiasAtraso(dataStr: string): number {
+  const dataTarefa = parseDataBR(dataStr);
+  if (!dataTarefa) return 0;
+
+  const agora = new Date();
+  const hojeMeioDia = new Date(
+    agora.getFullYear(),
+    agora.getMonth(),
+    agora.getDate(),
+    12,
+    0,
+    0,
+    0,
+  );
+
+  const msPorDia = 1000 * 60 * 60 * 24;
+  const diffDias = Math.floor(
+    (hojeMeioDia.getTime() - dataTarefa.getTime()) / msPorDia,
+  );
+
+  return diffDias > 0 ? diffDias : 0;
+}
+
 export default function TodoList() {
   const { t } = useTranslation();
   const [tarefas, setTarefas] = useState<Tarefa[]>([]);
@@ -50,28 +84,42 @@ export default function TodoList() {
       const resultado = await buscarTarefas();
       let lista = resultado as Tarefa[];
 
-      // Ordena por: 
+      // Remove automaticamente tarefas pendentes atrasadas há 3 dias ou mais
+      const tarefasManter: Tarefa[] = [];
+      for (const tarefa of lista) {
+        const diasAtraso = calcularDiasAtraso(tarefa.data);
+        if (!tarefa.concluida && diasAtraso >= DIAS_PARA_EXCLUIR) {
+          await deletarTarefa(tarefa.id);
+        } else {
+          tarefasManter.push(tarefa);
+        }
+      }
+
+      // Ordena por:
       // 1. Concluídas por último
       // 2. Data (mais antiga para mais recente - ordem cronológica)
       // 3. ID
-      lista.sort((a, b) => {
+      tarefasManter.sort((a, b) => {
         if (a.concluida !== b.concluida) {
           return a.concluida ? 1 : -1;
         }
 
         const dataA = a.data.split("/").reverse().join("-");
         const dataB = b.data.split("/").reverse().join("-");
-        
+
         if (dataA < dataB) return -1;
         if (dataA > dataB) return 1;
-        
+
         return a.id - b.id;
       });
 
-      setTarefas(lista);
+      setTarefas(tarefasManter);
     } catch (error) {
       console.error("Erro ao carregar tarefas:", error);
-      Alert.alert(t("return.error"), t("return.load_error") || "Não foi possível carregar as tarefas.");
+      Alert.alert(
+        t("return.error"),
+        t("return.load_error") || "Não foi possível carregar as tarefas.",
+      );
     }
   }
 
@@ -93,7 +141,8 @@ export default function TodoList() {
   async function confirmarExclusao(id: number) {
     Alert.alert(
       t("return.confirm_delete"),
-      t("return.confirm_delete_desc") || "Deseja realmente excluir esta tarefa?",
+      t("return.confirm_delete_desc") ||
+        "Deseja realmente excluir esta tarefa?",
       [
         { text: t("button.cancel"), style: "cancel" },
         {
@@ -150,6 +199,8 @@ export default function TodoList() {
   const renderItem = useCallback(
     ({ item }: { item: Tarefa }) => {
       const ehHoje = item.data === hojeStr;
+      const diasAtraso = !item.concluida ? calcularDiasAtraso(item.data) : 0;
+      const estaAtrasada = diasAtraso > 0;
 
       return (
         <RNView
@@ -157,8 +208,8 @@ export default function TodoList() {
             styles.card,
             {
               backgroundColor: colors.background_secondary,
-              borderColor: colors.border,
-              borderWidth: 1,
+              borderColor: estaAtrasada ? colors.danger : colors.border,
+              borderWidth: estaAtrasada ? 1.5 : 1,
               shadowColor: colors.text_primary,
               shadowOffset: { width: 0, height: 2 },
               shadowOpacity: 0.1,
@@ -190,10 +241,11 @@ export default function TodoList() {
                 >
                   {item.titulo}
                 </Text>
+
                 {ehHoje && (
                   <Text
                     style={[
-                      styles.hojeBadge,
+                      styles.statusBadge,
                       {
                         color: colors.info,
                         backgroundColor: `${colors.info}20`,
@@ -201,6 +253,20 @@ export default function TodoList() {
                     ]}
                   >
                     📌 {t("badge.today") || "Hoje"}
+                  </Text>
+                )}
+
+                {estaAtrasada && (
+                  <Text
+                    style={[
+                      styles.statusBadge,
+                      {
+                        color: colors.danger,
+                        backgroundColor: `${colors.danger}20`,
+                      },
+                    ]}
+                  >
+                    ⚠️ {t("badge.overdue") || "Atrasada"} ({diasAtraso}d)
                   </Text>
                 )}
               </View>
@@ -245,7 +311,7 @@ export default function TodoList() {
             <Text
               style={[
                 styles.dataText,
-                { color: colors.text_primary },
+                { color: estaAtrasada ? colors.danger : colors.text_primary },
                 item.concluida && { opacity: 0.5 },
               ]}
             >
@@ -361,7 +427,7 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   cardTitulo: { fontSize: 17, fontWeight: "bold" },
-  hojeBadge: {
+  statusBadge: {
     fontSize: 11,
     fontWeight: "bold",
     paddingHorizontal: 6,

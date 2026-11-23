@@ -16,7 +16,7 @@ export {
 } from 'expo-router';
 
 export const unstable_settings = {
-  initialRouteName: 'index',
+  archor: 'index',
 };
 
 // 1. Impede que o splash nativo suma sozinho antes do app carregar
@@ -32,19 +32,27 @@ export default function RootLayout() {
 
   // Configurar a Navigation Bar para Android de forma transparente
   useEffect(() => {
-    if (Platform.OS === 'android') {
-      async function setTransparentNavBar() {
-        try {
+  if (Platform.OS === 'android') {
+    async function setTransparentNavBar() {
+      try {
+        if (typeof NavigationBar.setBackgroundColorAsync === 'function') {
           await NavigationBar.setBackgroundColorAsync('transparent');
-          await NavigationBar.setButtonStyleAsync(colorScheme === 'dark' ? 'light' : 'dark');
-          await NavigationBar.setBehaviorAsync('inset-swipe');
-        } catch (e) {
-          console.log('Erro ao configurar navigation bar:', e);
         }
+        if (typeof NavigationBar.setButtonStyleAsync === 'function') {
+          await NavigationBar.setButtonStyleAsync(
+            colorScheme === 'dark' ? 'light' : 'dark'
+          );
+        }
+        if (typeof NavigationBar.setBehaviorAsync === 'function') {
+          await NavigationBar.setBehaviorAsync('inset-swipe');
+        }
+      } catch (e) {
+        console.log('Erro ao configurar navigation bar:', e);
       }
-      setTransparentNavBar();
     }
-  }, [colorScheme]);
+    setTransparentNavBar();
+  }
+}, [colorScheme]);
 
   useEffect(() => {
     if (error) throw error;

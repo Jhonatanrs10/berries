@@ -4,13 +4,15 @@ import {
   StyleSheet,
   GestureResponderEvent,
   Platform,
-  ImageSourcePropType, // Importar para tipar a fonte da imagem
+  ImageSourcePropType,
   ViewStyle,
   TextStyle,
-  ImageBackground
+  Image,
+  Text as RNText,
+  View as RNView,
 } from 'react-native';
 
-import { Text, View } from '../../components/Themed';
+import { View } from '../../components/Themed';
 import Colors from '../../constants/Colors';
 import { useColorScheme } from '../../components/useColorScheme';
 
@@ -23,10 +25,8 @@ interface ButtonTTAPPProps {
   textStyle?: TextStyle;
   disabled?: boolean;
   color?: 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'error' | string;
-
   displayButton?: boolean;
-  // --- NOVA PROPRIEDADE PARA A IMAGEM ---
-  imageSource?: ImageSourcePropType; // Adicionando a prop para a fonte da imagem
+  imageSource?: ImageSourcePropType;
 }
 
 const ButtonTTAPP: React.FC<ButtonTTAPPProps> = ({
@@ -39,7 +39,7 @@ const ButtonTTAPP: React.FC<ButtonTTAPPProps> = ({
   disabled = false,
   color = 'primary',
   displayButton = true,
-  imageSource, // Recebendo a nova prop
+  imageSource,
 }) => {
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme || 'light'];
@@ -61,8 +61,6 @@ const ButtonTTAPP: React.FC<ButtonTTAPPProps> = ({
     <TouchableOpacity
       style={[
         styles.buttonContainer,
-        // Removendo a cor de fundo do TouchableOpacity se a intenção é que a ImageBackground preencha
-        // { backgroundColor: colors.background_secondary },
         disabled && styles.buttonDisabled,
         displayStyle,
         buttonStyle,
@@ -74,36 +72,37 @@ const ButtonTTAPP: React.FC<ButtonTTAPPProps> = ({
       disabled={disabled || !displayButton}
     >
       {imageSource ? (
-        <ImageBackground
-          source={imageSource} // Usando a prop imageSource aqui
-          style={styles.imageBackground}
-          imageStyle={styles.imageStyle}
-        >
-          <Text
+        <RNView style={styles.imageWrapper}>
+          <Image
+            source={imageSource}
+            resizeMode="cover"
+            style={styles.image}
+          />
+          <RNText
+            numberOfLines={2}
             style={[
               styles.buttonText,
-              // Removendo a cor de texto dinâmica do colors.text_primary se a intenção é que seja sempre white para contraste
-              // { color: colors.text_primary },
+              styles.overlayText,
               disabled && styles.textDisabled,
               textStyle,
             ]}
           >
             {title}
-          </Text>
-        </ImageBackground>
+          </RNText>
+        </RNView>
       ) : (
-        // Renderiza apenas o Text se não houver imageSource, talvez com uma cor de fundo sólida
-        <View style={[styles.imageBackground, { backgroundColor: buttonBackgroundColor }]}>
-          <Text
+        <View style={[styles.imageWrapper, { backgroundColor: buttonBackgroundColor }]}>
+          <RNText
+            numberOfLines={2}
             style={[
               styles.buttonText,
-              { color: colors.text_primary }, // Aqui pode usar a cor do tema se não houver imagem
+              { color: colors.text_primary },
               disabled && styles.textDisabled,
               textStyle,
             ]}
           >
             {title}
-          </Text>
+          </RNText>
         </View>
       )}
     </TouchableOpacity>
@@ -116,10 +115,9 @@ const styles = StyleSheet.create({
     height: 120,
     borderRadius: 10,
     overflow: 'hidden',
-    // Remover ou ajustar estas sombras se quiser que o ImageBackground cuide disso
     ...Platform.select({
       ios: {
-        shadowColor: '#000', // Padrão
+        shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
@@ -129,18 +127,22 @@ const styles = StyleSheet.create({
       },
     }),
   },
-  imageBackground: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
+  imageWrapper: {
+    width: '100%',
+    height: '100%',
+    position: 'relative',
   },
-  imageStyle: {
-    resizeMode: 'cover',
-    borderRadius: 10,
-    
+  image: {
+    width: '100%',
+    height: '100%',
+  },
+  overlayText: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
   },
   buttonText: {
-    color: 'white', // GERALMENTE, texto em cima de imagem precisa ser branco ou preto
+    color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
     margin: 10,
@@ -149,45 +151,12 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 1,
   },
-  // Estes estilos de `buttonBase` parecem ser para um botão sem imagem de fundo
-  // e podem estar em conflito ou não sendo utilizados com a estrutura atual.
-  // Considere se são necessários ou se devem ser refatorados para um caso de uso diferente.
-  buttonBase: {
-    paddingVertical: 0,
-    paddingHorizontal: 0,
-    borderRadius: 40,
-    alignItems: 'flex-end',
-    justifyContent: 'flex-end',
-    minWidth: 0,
-    width: 350,
-    height: 150,
-    ...Platform.select({
-      ios: {
-        shadowColor: '#fff',
-        shadowOffset: { width: 5, height: 5 },
-        shadowOpacity: 0.0,
-        shadowRadius: 0,
-      },
-      android: {
-        elevation: 4,
-      },
-    }),
-  },
-  buttonTextBase: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    margin: 10,
-    marginEnd: 25
-  },
   buttonDisabled: {
     opacity: 0.5,
   },
   textDisabled: {
     color: '#A0A0A0',
   },
-  image: {
-    // Este estilo 'image' não está sendo usado. Pode ser removido.
-  }
 });
 
 export default ButtonTTAPP;

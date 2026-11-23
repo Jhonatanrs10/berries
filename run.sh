@@ -1,4 +1,13 @@
 #!/bin/bash
+sdk_version="58.0.0"
+nodejs_version="nodejs-lts-jod" # version 22
+#https://wiki.archlinux.org/title/Node.js
+
+pause() {
+	echo ""
+	echo -n "Pressione ENTER para continuar..."
+	read -r
+}
 
 clear_screen() {
 	printf "\033[2J\033[H"
@@ -8,34 +17,94 @@ npxcheckversions() {
 	echo ""
 	echo "Checando compatibilidade de versões..."
 	npx expo install --check
-	echo ""
-	echo -n "Pressione ENTER para continuar..."
-	read -r
+	pause
 }
 
 update_package_lock() {
 	echo ""
 	echo "Atualizando package-lock.json..."
-	npm install
+	npm install --legacy-peer-deps
+	pause
+}
+
+repair_project() {
 	echo ""
-	echo -n "Pressione ENTER para continuar..."
-	read -r
+	echo "🔧 Reparando projeto (limpeza + reinstalação + alinhamento Expo)..."
+	echo "Node atual: $(node -v 2>/dev/null || echo 'não encontrado') | npm atual: $(npm -v 2>/dev/null || echo 'não encontrado')"
+	echo ""
+	echo -n "Apagar node_modules e package-lock.json antes de reinstalar? [S/n]: "
+	read -r clean_ans
+
+	if [[ ! "${clean_ans,,}" =~ ^(n|nao|não)$ ]]; then
+		rm -rf node_modules package-lock.json yarn.lock
+		echo "Árvore antiga removida."
+	fi
+
+	echo ""
+	echo "1/3 Instalando dependências (npm install --legacy-peer-deps)..."
+	if ! npm install --legacy-peer-deps; then
+		echo "❌ Falha no npm install. Verifique a versão do Node.js (ex.: Node 22 LTS)."
+		pause
+		return 1
+	fi
+
+	echo ""
+	echo "2/3 Alinhando pacotes com o SDK do Expo..."
+	npx expo install --fix -- --legacy-peer-deps
+
+	echo ""
+	echo "3/3 Rodando diagnóstico (npx expo-doctor)..."
+	npx expo-doctor
+
+	pause
 }
 
 update_sdk() {
 	echo ""
-	echo "Atualizando Expo SDK e dependências..."
-	rm -rf node_modules package-lock.json yarn.lock
-	npx expo install expo@latest -- --legacy-peer-deps
-	npx expo install --fix
+	echo -e "Atualizando para Expo SDK $sdk_version (Node: $(node -v 2>/dev/null || echo '?'))\nhttps://wiki.archlinux.org/title/Node.js"
+	echo -n "Limpar node_modules e lockfiles antes de atualizar para o SDK $sdk_version? [S/n]: "
+	read -r clean_sdk
+
+	if [[ ! "${clean_sdk,,}" =~ ^(n|nao|não)$ ]]; then
+		rm -rf node_modules package-lock.json yarn.lock
+	fi
+
+	npm install --legacy-peer-deps
+	npx expo install "expo@^$sdk_version" "expo-router@^$sdk_version" -- --legacy-peer-deps
+	npx expo install --fix -- --legacy-peer-deps
 	npx expo config
 	npx expo-doctor
+	pause
 	npx expo start -c
 }
 
+rm_configs() {
+	echo ""
+	echo "AVISO: Isso vai apagar node_modules, package-lock.json e yarn.lock."
+	echo "Após apagar, você deve rodar 'npm install expo' (e alinhar dependências) antes de usar o projeto."
+	echo -n "Deseja realmente continuar? [s/N]: "
+	read -r confirm
+
+	case "${confirm,,}" in
+	s | sim | y | yes)
+		rm -rf node_modules package-lock.json yarn.lock
+		echo "Arquivos e pastas removidos. Lembre-se de rodar 'npm install expo' em seguida."
+		;;
+	*)
+		echo "Operação cancelada."
+		;;
+	esac
+	pause
+}
+
 install_expo() {
-	sudo pacman -S nodejs-lts-iron npm --needed
-	npm install expo
+	echo ""
+	echo "Node atual antes da instalação: $(node -v 2>/dev/null || echo 'nenhum')"
+	sudo pacman -S "$nodejs_version" npm --needed
+	hash -r
+	echo "Node ativo após pacman: $(node -v 2>/dev/null || echo 'nenhum')"
+	npm install expo --legacy-peer-deps
+	pause
 }
 
 local_build_req() {
@@ -44,16 +113,14 @@ local_build_req() {
 	sudo pacman -S --needed jdk17-openjdk
 	sudo archlinux-java set java-17-openjdk
 	yay -S --needed android-studio
-	echo -n "Pressione ENTER para continuar..."
-	read -r
+	pause
 }
 
 install_dependencies() {
 	echo ""
 	echo "Corrigindo e alinhando dependências..."
-	npx expo install --fix
-	echo -n "Pressione ENTER para continuar..."
-	read -r
+	npx expo install --fix -- --legacy-peer-deps
+	pause
 }
 
 run_project() {
@@ -83,16 +150,14 @@ build_apk() {
 	echo "Iniciando build na nuvem (EAS)..."
 
 	if ! check_expo_login; then
-		echo -n "Pressione ENTER para continuar..."
-		read -r
+		pause
 		return
 	fi
 
 	npx eas-cli@latest update:configure
 	npx eas-cli@latest build -p android --profile preview --clear-cache
 
-	echo -n "Pressione ENTER para continuar..."
-	read -r
+	pause
 }
 
 build_apk_local() {
@@ -106,8 +171,7 @@ build_apk_local() {
 
 	if [ ! -f "eas.json" ]; then
 		echo "Erro: O arquivo eas.json não foi encontrado."
-		echo -n "Pressione ENTER para continuar..."
-		read -r
+		pause
 		return 1
 	fi
 
@@ -119,17 +183,14 @@ build_apk_local() {
 		echo "❌ Erro no build local."
 	fi
 
-	echo -n "Pressione ENTER para continuar..."
-	read -r
+	pause
 }
 
 run_expo_doctor() {
 	echo ""
 	echo "Rodando diagnóstico de saúde do projeto..."
 	npx expo-doctor
-	echo ""
-	echo -n "Pressione ENTER para continuar..."
-	read -r
+	pause
 }
 
 open_vscode() {
@@ -142,15 +203,13 @@ git_pull() {
 	echo ""
 	echo "🔄 Puxando atualizações do repositório remoto (git pull)..."
 	git pull
-	echo ""
-	echo -n "Pressione ENTER para continuar..."
-	read -r
+	pause
 }
 
 git_push() {
 	echo ""
 	echo "🚀 Enviando alterações para o repositório (git push)..."
-	
+
 	git status
 	echo ""
 	echo -n "Digite a mensagem do commit: "
@@ -164,32 +223,48 @@ git_push() {
 	git commit -m "$commit_msg"
 	git push
 
-	echo ""
-	echo -n "Pressione ENTER para continuar..."
-	read -r
+	pause
 }
+
+OPCOES=(
+	"Rodar o Projeto (npx expo start)|run_project"
+	"Abrir Pasta no VS Code (code .)|open_vscode"
+	"---"
+	"Expo Setup (pacman + npm install expo)|install_expo"
+	"Reparar Projeto (Limpar + Instalar + Fix + Doctor)|repair_project"
+	"Limpar node_modules e lockfiles|rm_configs"
+	"Corrigir Dependências (npx expo install --fix)|install_dependencies"
+	"Verificar Saúde do Projeto (npx expo-doctor)|run_expo_doctor"
+	"Checar Compatibilidade (npx expo install --check)|npxcheckversions"
+	"Atualizar package-lock.json (npm install)|update_package_lock"
+	"Atualizar para Expo SDK \$sdk_version|update_sdk"
+	"---"
+	"Instalar Requisitos do Android Studio (Arch)|local_build_req"
+	"Buildar APK em Nuvem (EAS Build)|build_apk"
+	"Buildar APK Localmente (EAS Local)|build_apk_local"
+	"---"
+	"Git Pull|git_pull"
+	"Git Push|git_push"
+)
 
 show_menu() {
 	clear_screen
 	echo "-------------------------------------"
 	echo "  Gerenciador de Projeto Expo Go"
 	echo "-------------------------------------"
-	echo "1.  Rodar o Projeto (npx expo start)"
-	echo "2.  Abrir Pasta no VS Code (code .)"
-	echo "-------------------------------------"
-	echo "3.  Expo Setup (npm install expo)"
-	echo "4.  Corrigir Dependências (npx expo install --fix)"
-	echo "5.  Verificar Saúde do Projeto (npx expo-doctor)"
-	echo "6.  Checar Compatibilidade (npx expo install --check)"
-	echo "7.  Atualizar package-lock.json (npm install)"
-	echo "8.  Atualizar Expo SDK"
-	echo "-------------------------------------"
-	echo "9.  Instalar Requisitos do Android Studio (Arch)"
-	echo "10. Buildar APK em Nuvem (EAS Build)"
-	echo "11. Buildar APK Localmente (EAS Local)"
-	echo "-------------------------------------"
-	echo "12. Git Pull"
-	echo "13. Git Push"
+
+	local num=1
+	for item in "${OPCOES[@]}"; do
+		if [[ "$item" == "---" ]]; then
+			echo "-------------------------------------"
+		else
+			local rotulo="${item%%|*}"
+			rotulo="${rotulo//\$sdk_version/$sdk_version}"
+			printf "%d.  %s\n" "$num" "$rotulo"
+			((num++))
+		fi
+	done
+
 	echo "-------------------------------------"
 	echo "0. Sair"
 	echo "-------------------------------------"
@@ -200,32 +275,27 @@ expo_menu() {
 	while true; do
 		show_menu
 		read -r choice
-		case "$choice" in
-		1) run_project ;;
-		2) open_vscode ;;
-		3) install_expo ;;
-		4) install_dependencies ;;
-		5) run_expo_doctor ;;
-		6) npxcheckversions ;;
-		7) update_package_lock ;;
-		8) update_sdk ;;
-		9) local_build_req ;;
-		10) build_apk ;;
-		11) build_apk_local ;;
-		12) git_pull ;;
-		13) git_push ;;
-		0)
+
+		if [[ "$choice" == "0" ]]; then
 			echo ""
 			echo "Saindo. Até mais!"
 			exit 0
-			;;
-		*)
+		fi
+
+		local -a funcoes=()
+		for item in "${OPCOES[@]}"; do
+			if [[ "$item" != "---" ]]; then
+				funcoes+=("${item##*|}")
+			fi
+		done
+
+		if [[ "$choice" =~ ^[0-9]+$ ]] && (( choice >= 1 && choice <= ${#funcoes[@]} )); then
+			"${funcoes[$((choice - 1))]}"
+		else
 			echo ""
 			echo "Opção inválida."
-			echo -n "Pressione ENTER para continuar..."
-			read -r
-			;;
-		esac
+			pause
+		fi
 	done
 }
 

@@ -279,7 +279,8 @@
     }
   },
   "badge": {
-    "today": "Hoje"
+    "today": "Hoje",
+    "overdue": "Atrasada"
   },
   "category": {
     "general": "Geral"
