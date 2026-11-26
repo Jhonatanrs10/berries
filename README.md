@@ -20,11 +20,12 @@
 
 O **Berries** é um aplicativo mobile (foco em Android) de hobby desenvolvido para centralizar a gestão pessoal de forma prática e temática. O nome e a identidade do projeto são inspirados na famosa moeda do universo de *One Piece*, unindo o universo geek/anime à organização financeira e de tarefas cotidianas.
 
-O aplicativo atualmente é dividido em **3 submódulos principais**:
+O aplicativo atualmente é dividido em **4 submódulos**:
 
-- 📺 **Controle de Animes:** Acompanhe suas séries, maratonas e episódios assistidos.
-- 💰 **Controle de Finanças:** Gerencie seus gastos, receitas e orçamento pessoal.
-- 🛒 **Controle de Mercado:** Monte sua lista de compras interativa, marque os itens e calcule o total da conta em tempo real.
+- 📺 **Animes:** Acompanhe suas séries, maratonas e episódios assistidos.
+- 💰 **Finanças:** Gerencie seus gastos, receitas e orçamento pessoal.
+- 🛒 **Mercado:** Monte sua lista de compras e calcule o total da conta em tempo real.
+- ✅ **Tarefas:** Organize suas atividades do dia a dia em uma lista simples e marque o que já foi concluído.
 
 ---
 
@@ -52,10 +53,3 @@ Antes de começar, você precisará ter instalado em sua máquina:
 1. **Clone este repositório:**
    ```bash
    git clone https://github.com/Jhonatanrs10/berries.git
-
-## 🚀 Futuras Atualizações (Roadmap)
-
-- Usar % no tamanho da logo na splash screen.
-- Quarto app de To Do com tempo da atividade e tempo total para a conclusão de todas
-- Melhorar o amarelo do modo light (talvez colocar borda dos inputs?)
-- Testar UX uma tira nos dias da semana dos animes com a cor da borda do search
