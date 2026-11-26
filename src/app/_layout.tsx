@@ -4,10 +4,11 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import { useEffect } from 'react';
-import { Platform } from 'react-native';
+import { Appearance, Platform } from 'react-native';
 import * as NavigationBar from 'expo-navigation-bar';
 import * as SplashScreen from 'expo-splash-screen';
 import 'react-native-reanimated';
+import { StatusBar } from 'expo-status-bar';
 
 import { useColorScheme } from '../components/useColorScheme';
 
@@ -16,7 +17,7 @@ export {
 } from 'expo-router';
 
 export const unstable_settings = {
-  archor: 'index',
+  anchor: 'index',
 };
 
 // 1. Impede que o splash nativo suma sozinho antes do app carregar
@@ -24,7 +25,8 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
-  
+  const resolvedScheme = colorScheme ?? Appearance.getColorScheme() ?? 'light';
+
   const [loaded, error] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     ...FontAwesome.font,
@@ -32,33 +34,33 @@ export default function RootLayout() {
 
   // Configurar a Navigation Bar para Android de forma transparente
   useEffect(() => {
-  if (Platform.OS === 'android') {
-    async function setTransparentNavBar() {
-      try {
-        if (typeof NavigationBar.setBackgroundColorAsync === 'function') {
-          await NavigationBar.setBackgroundColorAsync('transparent');
+    if (Platform.OS === 'android') {
+      async function setTransparentNavBar() {
+        try {
+          if (typeof NavigationBar.setBackgroundColorAsync === 'function') {
+            await NavigationBar.setBackgroundColorAsync('transparent');
+          }
+          if (typeof NavigationBar.setButtonStyleAsync === 'function') {
+            await NavigationBar.setButtonStyleAsync(
+              resolvedScheme === 'dark' ? 'light' : 'dark'
+            );
+          }
+          if (typeof NavigationBar.setBehaviorAsync === 'function') {
+            await NavigationBar.setBehaviorAsync('inset-swipe');
+          }
+        } catch (e) {
+          console.log('Erro ao configurar navigation bar:', e);
         }
-        if (typeof NavigationBar.setButtonStyleAsync === 'function') {
-          await NavigationBar.setButtonStyleAsync(
-            colorScheme === 'dark' ? 'light' : 'dark'
-          );
-        }
-        if (typeof NavigationBar.setBehaviorAsync === 'function') {
-          await NavigationBar.setBehaviorAsync('inset-swipe');
-        }
-      } catch (e) {
-        console.log('Erro ao configurar navigation bar:', e);
       }
+      setTransparentNavBar();
     }
-    setTransparentNavBar();
-  }
-}, [colorScheme]);
+  }, [resolvedScheme]);
 
   useEffect(() => {
     if (error) throw error;
   }, [error]);
 
-  // 2. Assim que as fontes carregarem, escondemos o splash nativo com elegância
+  // 2. Esconde o splash screen assim que as fontes carregarem
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync().catch(() => {
@@ -72,21 +74,31 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
+  return <RootLayoutNav resolvedScheme={resolvedScheme} />;
 }
 
-function RootLayoutNav() {
-  const colorScheme = useColorScheme();
+function RootLayoutNav({ resolvedScheme }: { resolvedScheme: 'light' | 'dark' }) {
+  const barStyle = resolvedScheme === 'dark' ? 'light' : 'dark';
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="(animes)" options={{ headerShown: false }} />
-        <Stack.Screen name="(finance)" options={{ headerShown: false }} />
-        <Stack.Screen name="(market)" options={{ headerShown: false }} />
-        <Stack.Screen name="(todo)" options={{ headerShown: false }} />
-      </Stack>
-    </ThemeProvider>
+    <>
+      <StatusBar
+        style={barStyle}
+        animated={false}
+      />
+      <ThemeProvider value={resolvedScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <Stack.Screen name="index" />
+          <Stack.Screen name="(animes)" />
+          <Stack.Screen name="(finance)" />
+          <Stack.Screen name="(market)" />
+          <Stack.Screen name="(todo)" />
+        </Stack>
+      </ThemeProvider>
+    </>
   );
 }

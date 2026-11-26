@@ -47,7 +47,12 @@ export default {
           }
         }
       ],
-      "expo-status-bar",
+      [
+        "expo-status-bar",
+        {
+          "style": "dark"
+        }
+      ],
       [
         "expo-navigation-bar",
         {

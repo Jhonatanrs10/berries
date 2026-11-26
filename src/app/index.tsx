@@ -1,6 +1,5 @@
 // app/index.js
 import { useTranslation } from "react-i18next";
-import { StatusBar } from "expo-status-bar";
 import { View, Text, StyleSheet, Platform, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
 import ButtonTTAPP from "../components/Jhonatanrs/ButtonTTAPP";
@@ -82,10 +81,7 @@ export default function HomeScreen() {
           </Text>
         </View>
       </ScrollView>
-      <StatusBar
-        style={colorScheme === "dark" ? "light" : "dark"}
-        animated={false}
-      />
+
     </View>
   );
 }
